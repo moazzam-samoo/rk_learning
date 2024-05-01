@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "288119184456",
+    "project_id": "rk-learning-e2d79",
+    "storage_bucket": "rk-learning-e2d79.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288119184456:android:db4f5eab271845c0bc8c7d",
+        "android_client_info": {
+          "package_name": "com.RkLearning.rk_learning"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkk1oSrVjhMYa7mB23Crr6HE9nVYeSMtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
