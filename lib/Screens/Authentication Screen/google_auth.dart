@@ -14,7 +14,7 @@ class Authentication {
         await googleSignIn.signIn();
 
     if (googleSignInAccount != null) {
-      EasyLoading.show(status: "Please Wait...",);
+      EasyLoading.show(status: "Please Wait...");
       final GoogleSignInAuthentication googleSignInAuthentication =
           await googleSignInAccount.authentication;
 

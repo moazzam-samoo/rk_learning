@@ -7,34 +7,39 @@ import 'package:rk_learning/Constants/capitalize.dart';
 import 'package:rk_learning/Constants/colors.dart';
 import 'package:rk_learning/Database/firebase_handler.dart';
 import 'package:rk_learning/Widgets/custom_course_data.dart';
+import 'package:rk_learning/Widgets/reuseable_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../Models/course_model.dart';
 
 buildName(BuildContext context) {
-  return Row(
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
-        "Hi, ",
-        style: Theme.of(context).textTheme.headlineSmall,
+      Row(
+        children: [
+          reuseText("Hi,  ", 22, FontWeight.bold, buttonFirstColor),
+          Text(
+              FirebaseAuth.instance.currentUser!.displayName
+                  .toString()
+                  .split(" ")[0]
+                  .capitalize(),
+              style: Theme.of(context).textTheme.displayLarge),
+        ],
       ),
-      Text(
-          FirebaseAuth.instance.currentUser!.displayName
-              .toString()
-              .split(" ")[0]
-              .capitalize(),
-          style: Theme.of(context).textTheme.displayLarge),
+      reuseText(" Welcome Back!", 24, FontWeight.w400, secondaryTextColor)
     ],
   );
 }
 
 buildAppbar(Function() onTab) {
   return AppBar(
-      backgroundColor: primaryBackgroundColor,
+      backgroundColor: firstPrimaryBg,
       elevation: 0,
-      leading: InkWell(
-        onTap: onTab,
-        child: const Icon(
+      leadingWidth: 60.w,
+      leading: IconButton(
+        onPressed: onTab,
+        icon: const Icon(
           FontAwesomeIcons.bars,
           color: textWhiteColor,
         ),
@@ -51,10 +56,10 @@ buildProfileAvatar() {
   return Padding(
     padding: const EdgeInsets.only(right: 10, top: 4),
     child: CircleAvatar(
-      backgroundColor: shadowColor,
+      backgroundColor: textWhiteColor,
       radius: 33,
       child: CircleAvatar(
-        radius: 25.6,
+        radius: 33,
         backgroundImage: NetworkImage(
             FirebaseAuth.instance.currentUser!.photoURL.toString()),
       ),

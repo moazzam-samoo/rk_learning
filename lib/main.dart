@@ -5,8 +5,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rk_learning/Constants/colors.dart';
 import 'package:rk_learning/Screens/Authentication%20Screen/auth/authentication_screen.dart';
-import 'package:rk_learning/Screens/Splash%20Screen/splash_screen.dart';
-import 'package:rk_learning/Screens/Welcome%20Screen/navigation_bar.dart';
 import 'package:rk_learning/Screens/Welcome%20Screen/welcome_screen.dart';
 import 'package:rk_learning/firebase_options.dart';
 
@@ -67,12 +65,12 @@ class MyApp extends StatelessWidget {
                     final FirebaseAuth auth = FirebaseAuth.instance;
                     final User? user = auth.currentUser;
                     if (user != null) {
-                      return const AuthenticationScreen();
+                      return const WelcomeScreen();
                     } else {
-                      return const AuthenticationScreen();
+                      return const WelcomeScreen();
                     }
                   }
-                  return const AuthenticationScreen();
+                  return const WelcomeScreen();
                 })));
   }
 }

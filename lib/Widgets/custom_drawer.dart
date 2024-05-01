@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rk_learning/Constants/colors.dart';
 import 'package:rk_learning/Screens/Authentication%20Screen/auth/authentication_screen.dart';
 
@@ -11,19 +13,17 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: secondaryBackgroundColorII,
+      backgroundColor: containerColor,
       child: SafeArea(
         child: Column(
           children: [
             Padding(
-              padding:  EdgeInsets.only(
+              padding: EdgeInsets.only(
                   left: 70.w, right: 70.w, bottom: 60.h, top: 24.h),
-              child: Image.asset(
-                'assets/icons/app_logo.png',
-              ),
+              child: Lottie.asset("assets/animations/circle.json"),
             ),
             //buildButton(context, Icons.book, ' My Courses', const MyCourse()),
-            buildButton(context, Icons.logout, ' Sign Out',
+            buildButton(context, FontAwesomeIcons.signOut, ' Sign Out',
                 const AuthenticationScreen()),
           ],
         ),
@@ -39,20 +39,26 @@ class CustomDrawer extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon),
-               SizedBox(
-                width: 4.w,
+              Icon(
+                icon,
+                color: textWhiteColor,
+              ),
+              SizedBox(
+                width: 20.w,
               ),
               Text(label,
                   style: TextStyle(
                       fontSize: 17.sp,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w500)),
+                      color: primaryTextColor,
+                      fontWeight: FontWeight.w400)),
             ],
           ),
           const Align(
               alignment: Alignment.centerRight,
-              child: Icon(Icons.arrow_forward_ios)),
+              child: Icon(
+                Icons.arrow_forward_ios,
+                color: textWhiteColor,
+              )),
         ],
       ),
       onPressed: () {
