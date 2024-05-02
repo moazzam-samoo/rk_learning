@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rk_learning/Constants/colors.dart';
+
 import 'package:rk_learning/Constants/responsive_screen.dart';
 import 'package:rk_learning/Screens/Welcome%20Screen/Conopnents%20Of%20WelcomeScreen/components_of_welcomescreen.dart';
 import 'package:rk_learning/Widgets/custom_drawer.dart';
-import 'package:rk_learning/Widgets/reuseable_widgets.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -14,16 +12,13 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  TextEditingController textEditingControllerSearch = TextEditingController();
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int index = 0;
   @override
   Widget build(BuildContext context) {
     double height = (MediaQuery.of(context).size.height);
     double width = (MediaQuery.of(context).size.width);
     return Scaffold(
-      appBar: buildAppbar(() => scaffoldKey.currentState?.openDrawer()),
-      key: scaffoldKey,
+      appBar: buildAppbar(),
       drawer: const CustomDrawer(),
       body: Container(
         margin: EdgeInsets.symmetric(
