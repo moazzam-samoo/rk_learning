@@ -9,7 +9,6 @@ import 'package:rk_learning/Database/firebase_handler.dart';
 import 'package:rk_learning/Widgets/custom_course_data.dart';
 import 'package:rk_learning/Widgets/reuseable_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../Models/course_model.dart';
 
 buildName(BuildContext context) {
@@ -32,21 +31,23 @@ buildName(BuildContext context) {
   );
 }
 
-buildAppbar(Function() onTab) {
+buildAppbar() {
   return AppBar(
-      backgroundColor: firstPrimaryBg,
-      elevation: 0,
-      leadingWidth: 60.w,
-      leading: IconButton(
-        onPressed: onTab,
+    leading: Builder(builder: (context) {
+      return IconButton(
+        onPressed: () {
+          Scaffold.of(context).openDrawer();
+        },
         icon: const Icon(
           FontAwesomeIcons.bars,
           color: textWhiteColor,
         ),
-      ),
-      actions: [
-        buildProfileAvatar(),
-      ]);
+      );
+    }),
+    elevation: 0,
+    backgroundColor: firstPrimaryBg,
+    actions: [buildProfileAvatar()],
+  );
 }
 
 buildProfileAvatar() {

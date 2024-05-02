@@ -22,17 +22,15 @@ class CustomDrawer extends StatelessWidget {
                   left: 70.w, right: 70.w, bottom: 60.h, top: 24.h),
               child: Lottie.asset("assets/animations/circle.json"),
             ),
-            //buildButton(context, Icons.book, ' My Courses', const MyCourse()),
-            buildButton(context, FontAwesomeIcons.signOut, ' Sign Out',
-                const AuthenticationScreen()),
+            buildButton(context, FontAwesomeIcons.signOut, "Sign Out",
+                const AuthenticationScreen())
           ],
         ),
       ),
     );
   }
 
-  MaterialButton buildButton(
-      BuildContext context, IconData icon, String label, page) {
+  buildButton(BuildContext context, IconData icon, String label, page) {
     return MaterialButton(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
