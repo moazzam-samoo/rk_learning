@@ -18,17 +18,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     double height = (MediaQuery.of(context).size.height);
     double width = (MediaQuery.of(context).size.width);
     return Scaffold(
-      appBar: buildAppbar(),
       drawer: const CustomDrawer(),
       body: Container(
         margin: EdgeInsets.symmetric(
+          vertical: ResponsiveScreen.height(context) * 0.06,
           horizontal: ResponsiveScreen.width(context) * 0.04,
         ),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildName(context),
+              buildProfilePicAndName(context),
               SizedBox(height: height * 0.01),
             ],
           ),

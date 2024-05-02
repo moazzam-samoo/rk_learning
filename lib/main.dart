@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
                 return const AuthenticationScreen();
               }
             }
-            return const AuthenticationScreen();
+            return const WelcomeScreen();
           },
         ),
       ),
