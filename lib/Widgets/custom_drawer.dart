@@ -22,8 +22,8 @@ class CustomDrawer extends StatelessWidget {
                   left: 70.w, right: 70.w, bottom: 60.h, top: 24.h),
               child: Lottie.asset("assets/animations/circle.json"),
             ),
-            buildButton(context, FontAwesomeIcons.signOut, "Sign Out",
-                const AuthenticationScreen())
+            buildButton(context, FontAwesomeIcons.arrowRightFromBracket,
+                "Sign Out", const AuthenticationScreen())
           ],
         ),
       ),

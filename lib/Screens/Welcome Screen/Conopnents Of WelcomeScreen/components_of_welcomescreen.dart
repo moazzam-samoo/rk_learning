@@ -11,22 +11,28 @@ import 'package:rk_learning/Widgets/reuseable_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../Models/course_model.dart';
 
-buildName(BuildContext context) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
+buildProfilePicAndName(BuildContext context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Row(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          reuseText("Hi,  ", 22, FontWeight.bold, buttonFirstColor),
-          Text(
-              FirebaseAuth.instance.currentUser!.displayName
-                  .toString()
-                  .split(" ")[0]
-                  .capitalize(),
-              style: Theme.of(context).textTheme.displayLarge),
+          Row(
+            children: [
+              reuseText("Hi,  ", 22, FontWeight.bold, buttonFirstColor),
+              Text(
+                  FirebaseAuth.instance.currentUser!.displayName
+                      .toString()
+                      .split(" ")[0]
+                      .capitalize(),
+                  style: Theme.of(context).textTheme.displayLarge),
+            ],
+          ),
+          reuseText(" Welcome Back!", 24, FontWeight.w400, secondaryTextColor)
         ],
       ),
-      reuseText(" Welcome Back!", 24, FontWeight.w400, secondaryTextColor)
+      buildProfileAvatar(),
     ],
   );
 }
@@ -54,18 +60,22 @@ buildProfileAvatar() {
   // ConnectivityResult connectivityResult =
   //     await Connectivity().checkConnectivity();
   // bool isConnected = connectivityResult != ConnectivityResult.none;
-  return Padding(
-    padding: const EdgeInsets.only(right: 10, top: 4),
-    child: CircleAvatar(
-      backgroundColor: textWhiteColor,
-      radius: 33,
+  return Builder(builder: (context) {
+    return GestureDetector(
+      onTap: () {
+        Scaffold.of(context).openDrawer();
+      },
       child: CircleAvatar(
-        radius: 33,
-        backgroundImage: NetworkImage(
-            FirebaseAuth.instance.currentUser!.photoURL.toString()),
+        backgroundColor: textWhiteColor,
+        radius: 27.3,
+        child: CircleAvatar(
+          radius: 27,
+          backgroundImage: NetworkImage(
+              FirebaseAuth.instance.currentUser!.photoURL.toString()),
+        ),
       ),
-    ),
-  );
+    );
+  });
 }
 
 //Design it Latter <Reminder>
