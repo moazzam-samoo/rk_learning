@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rk_learning/Constants/responsive_screen.dart';
 import 'package:rk_learning/Screens/Welcome%20Screen/Conopnents%20Of%20WelcomeScreen/components_of_welcomescreen.dart';
 import 'package:rk_learning/Widgets/build_screens_tabBar.dart';
 import 'package:rk_learning/Widgets/build_widgets.dart';
 import 'package:rk_learning/Widgets/custom_drawer.dart';
-import 'package:rk_learning/Widgets/reuseable_widgets.dart';
+
+import '../../Widgets/navigate_links_to_other_platform.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -39,14 +40,45 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 children: [
                   courseScreen(),
                   testScreen(),
-                  Center(
-                    child: reuseText("Notification Screen", 18,
-                        FontWeight.normal, Colors.white),
-                  ),
-                  Center(
-                    child: reuseText("Contact us Screen", 18, FontWeight.normal,
-                        Colors.white),
-                  ),
+                  notificationScreen(),
+                  Container(
+                    margin:
+                        EdgeInsets.symmetric(vertical: 30.h, horizontal: 15.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            contactButton(context, "WhatsApp Us", "whatsapp",
+                                onTab: () {
+                              whatsAppLaunchUrl();
+                            }),
+                            contactButton(context, "Instagram", "instagram",
+                                onTab: () {
+                              instagramLaunchUrl();
+                            }),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 50.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            contactButton(context, "Facebook", "facebook",
+                                onTab: () {
+                              facebookLaunchUrl();
+                            }),
+                            contactButton(context, "YouTube", "youtube",
+                                onTab: () {
+                              youTubeLaunchUrl();
+                            }),
+                          ],
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),

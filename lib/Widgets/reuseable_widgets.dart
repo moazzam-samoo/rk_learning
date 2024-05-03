@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget reuseText(
     String text, double fontSize, FontWeight? fontWeight, Color color,
-    {int maxWords = -1}) {
+    {int maxWords = -1, TextAlign? textAlign}) {
   List<String> words = text.split(' ');
   String displayText = text;
   if (maxWords > 0 && words.length > maxWords) {
@@ -11,7 +11,7 @@ Widget reuseText(
   }
   return Text(
     displayText,
-    textAlign: TextAlign.center,
+    textAlign: textAlign,
     style: TextStyle(
       color: color,
       fontSize: fontSize.sp,

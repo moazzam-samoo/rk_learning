@@ -20,7 +20,8 @@ buildProfilePicAndName(BuildContext context) {
         children: [
           Row(
             children: [
-              reuseText("Hi,  ", 22, FontWeight.bold, buttonFirstColor),
+              reuseText("Hi,  ", 22, FontWeight.bold, buttonFirstColor,
+                  textAlign: TextAlign.center),
               Text(
                   FirebaseAuth.instance.currentUser!.displayName
                       .toString()
@@ -198,15 +199,6 @@ buildWhatsAppButton(double width, int index, Function() onTab) {
   );
 }
 
-//for sending user to whats app method that is called by <welcomeScreen>
-whatsAppLaunchUrl() {
-  const link =
-      'whatsapp://send?phone=+923130339546&text=I want to know about RK LEARNING';
-  launchUrl(
-    Uri.parse(link),
-    mode: LaunchMode.platformDefault,
-  );
-}
 
 buildCourseData(double height) {
   return SizedBox(

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rk_learning/Widgets/reuseable_widgets.dart';
@@ -67,12 +66,12 @@ class _CirclePainter extends BoxPainter {
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration cfg) {
-    late Paint _paint;
-    _paint = Paint()..color = color;
-    _paint = _paint..isAntiAlias = true;
+    late Paint paint;
+    paint = Paint()..color = color;
+    paint = paint..isAntiAlias = true;
     final Offset circleOffset =
         offset + Offset(cfg.size!.width / 2, cfg.size!.height - radius);
-    canvas.drawCircle(circleOffset, radius, _paint);
+    canvas.drawCircle(circleOffset, radius, paint);
   }
 }
 // --> Whole for BuildTabBar
@@ -116,6 +115,39 @@ courseImage(BuildContext context, String image) {
           filterQuality: FilterQuality.high,
           fit: BoxFit.fill,
         ),
+      ),
+    ),
+  );
+}
+
+contactButton(
+  BuildContext context,
+  String title,
+  String icon, {
+  VoidCallback? onTab,
+}) {
+  return GestureDetector(
+    onTap: onTab,
+    child: Container(
+      height: ResponsiveScreen.height(context) * 0.14,
+      width: ResponsiveScreen.width(context) * 0.33,
+      decoration: BoxDecoration(
+        color: containerColor,
+        border: Border.all(color: shadowColor, width: 2),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/icons/$icon.png',
+            scale: 8,
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          reuseText(title, 14, FontWeight.w500, primaryTextColor)
+        ],
       ),
     ),
   );
