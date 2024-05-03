@@ -5,6 +5,7 @@ import 'package:rk_learning/Widgets/reuseable_widgets.dart';
 import '../Constants/colors.dart';
 import '../Constants/responsive_screen.dart';
 import 'build_widgets.dart';
+import 'navigate_links_to_other_platform.dart';
 
 courseScreen() {
   return ListView.builder(
@@ -173,6 +174,42 @@ notificationScreen() {
         ],
       );
     },
+  );
+}
+
+contactScreen(BuildContext context) {
+  return Container(
+    margin: EdgeInsets.symmetric(vertical: 30.h, horizontal: 15.w),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            contactButton(context, "WhatsApp Us", "whatsapp", onTab: () {
+              whatsAppLaunchUrl();
+            }),
+            contactButton(context, "Instagram", "instagram", onTab: () {
+              instagramLaunchUrl();
+            }),
+          ],
+        ),
+        SizedBox(
+          height: 50.h,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            contactButton(context, "Facebook", "facebook", onTab: () {
+              facebookLaunchUrl();
+            }),
+            contactButton(context, "YouTube", "youtube", onTab: () {
+              youTubeLaunchUrl();
+            }),
+          ],
+        )
+      ],
+    ),
   );
 }
 
