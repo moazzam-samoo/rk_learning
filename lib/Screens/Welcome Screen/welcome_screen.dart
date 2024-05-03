@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:rk_learning/Constants/responsive_screen.dart';
 import 'package:rk_learning/Screens/Welcome%20Screen/Conopnents%20Of%20WelcomeScreen/components_of_welcomescreen.dart';
-import 'package:rk_learning/Widgets/buildCourseScreen.dart';
+import 'package:rk_learning/Widgets/build_screens_tabBar.dart';
 import 'package:rk_learning/Widgets/build_widgets.dart';
 import 'package:rk_learning/Widgets/custom_drawer.dart';
 import 'package:rk_learning/Widgets/reuseable_widgets.dart';
@@ -16,8 +16,6 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with TickerProviderStateMixin {
-  int index = 0;
-
   @override
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 4, vsync: this);
@@ -40,10 +38,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 controller: tabController,
                 children: [
                   courseScreen(),
-                  Center(
-                    child: reuseText(
-                        "Test Screen", 18, FontWeight.normal, Colors.white),
-                  ),
+                  testScreen(),
                   Center(
                     child: reuseText("Notification Screen", 18,
                         FontWeight.normal, Colors.white),
