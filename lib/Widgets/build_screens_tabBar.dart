@@ -44,6 +44,55 @@ courseScreen() {
       });
 }
 
+testScreen() {
+  return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemCount: courses.length,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 5.h),
+          width: ResponsiveScreen.width(context),
+          height: ResponsiveScreen.height(context) * 0.10,
+          decoration: BoxDecoration(
+              color: containerColor,
+              border: Border.all(color: shadowColor, width: 3.w),
+              borderRadius: BorderRadius.circular(30)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Image.asset(
+                'assets/icons/qna.png',
+                scale: 9,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  reuseText("${courses[index]["title"] + " MCQs"}", 18,
+                      FontWeight.bold, primaryTextColor),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Row(
+                    children: [
+                      reuseText("Total MCQs", 16, FontWeight.w500,
+                          secondaryTextColor),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      reuseText("${courses.length}", 16, FontWeight.w400,
+                          primaryTextColor),
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+        );
+      });
+}
+
 List<Map<String, dynamic>> courses = [
   {
     "image": "images.jpg",
