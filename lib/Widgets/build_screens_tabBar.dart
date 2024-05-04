@@ -4,6 +4,7 @@ import 'package:rk_learning/Widgets/reuseable_widgets.dart';
 
 import '../Constants/colors.dart';
 import '../Constants/responsive_screen.dart';
+import '../Screens/Course Content/course_content.dart';
 import 'build_widgets.dart';
 import 'navigate_links_to_other_platform.dart';
 
@@ -13,33 +14,39 @@ courseScreen() {
       scrollDirection: Axis.vertical,
       itemCount: courses.length,
       itemBuilder: (context, index) {
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 4.w),
-          width: ResponsiveScreen.width(context),
-          height: ResponsiveScreen.height(context) * 0.18,
-          decoration: BoxDecoration(
-              color: containerColor,
-              border: Border.all(color: shadowColor, width: 3.w),
-              borderRadius: BorderRadius.circular(30)),
-          child: Row(
-            children: [
-              courseImage(context, courses[index]["image"]),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    reuseText(courses[index]["title"], 16, FontWeight.bold,
-                        primaryTextColor,
-                        maxWords: 2),
-                    reuseText("Entry Test Preparation", 10, FontWeight.normal,
-                        primaryTextColor),
-                    purchaseButton(() {}, context)
-                  ],
-                ),
-              )
-            ],
+        return GestureDetector(
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => CourseContent(selectedIndex: index))),
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 4.w),
+            width: ResponsiveScreen.width(context),
+            height: ResponsiveScreen.height(context) * 0.18,
+            decoration: BoxDecoration(
+                color: containerColor,
+                border: Border.all(color: shadowColor, width: 3.w),
+                borderRadius: BorderRadius.circular(30)),
+            child: Row(
+              children: [
+                courseImage(context, courses[index]["image"]),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      reuseText(courses[index]["title"], 16, FontWeight.bold,
+                          primaryTextColor,
+                          maxWords: 2),
+                      reuseText("Entry Test Preparation", 10, FontWeight.normal,
+                          primaryTextColor),
+                      purchaseButton(() {}, context),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         );
       });
@@ -217,42 +224,49 @@ contactScreen(BuildContext context) {
 List<Map<String, dynamic>> courses = [
   {
     "image": "images.jpg",
+    "author": 'Sir Raj Kumar',
     "title": "Sindh University",
     "description":
         "Sindh University is a public research university in Sindh, Pakistan."
   },
   {
     "image": "mehran.jpg",
+    "author": 'Moazzam Samoo',
     "title": "Mehran University",
     "description":
         "Mehran University of Engineering and Technology is a public research university in Jamshoro, Sindh, Pakistan."
   },
   {
     "image": "mehran.jpg",
+    "author": 'Dr.Waheed Jatoi',
     "title": "Mehran University",
     "description":
         "Mehran University of Engineering and Technology is a public research university in Jamshoro, Sindh, Pakistan."
   },
   {
     "image": "mehran.jpg",
+    "author": 'Dr.Asad Buledi',
     "title": "Mehran University",
     "description":
         "Mehran University of Engineering and Technology is a public research university in Jamshoro, Sindh, Pakistan."
   },
   {
     "image": "mehran.jpg",
+    "author": 'Dr.Fida Chandio',
     "title": "Mehran University",
     "description":
         "Mehran University of Engineering and Technology is a public research university in Jamshoro, Sindh, Pakistan."
   },
   {
     "image": "lumhs.jpg",
+    "author": 'Dr.Sumera Dero',
     "title": "LUMHS University",
     "description":
         "Liaquat University of Medical and Health Sciences is a public research university in Jamshoro, Sindh, Pakistan."
   },
   {
     "image": "gc.jpg",
+    "author": 'Dr.Najma Channa',
     "title": "GC University",
     "description":
         "Government College University is a public research university in Faisalabad, Punjab, Pakistan."

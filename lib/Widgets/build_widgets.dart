@@ -5,6 +5,7 @@ import 'package:rk_learning/Widgets/reuseable_widgets.dart';
 import '../Constants/colors.dart';
 import '../Constants/responsive_screen.dart';
 import '../Screens/Welcome Screen/welcome_screen.dart';
+import 'build_screens_tabBar.dart';
 
 buildImage(BuildContext context) {
   double height = (((MediaQuery.of(context).size.height) - 70) / 2);
@@ -20,7 +21,7 @@ buildImage(BuildContext context) {
 }
 
 // --> Whole for BuildTabBar
-buildTabBar(TabController tabController) {
+buildWelcomeTabBar(TabController tabController) {
   return TabBar(
     indicator: CircleTabIndicator(
       color: buttonFirstColor,
@@ -42,6 +43,29 @@ buildTabBar(TabController tabController) {
       ),
       Tab(
         text: "Contact",
+      ),
+    ],
+  );
+}
+
+buildCourseContentTabBar(TabController tabController) {
+  return TabBar(
+    physics: const ClampingScrollPhysics(),
+    padding: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+    indicatorSize: TabBarIndicatorSize.label,
+    unselectedLabelColor: secondaryTextColor,
+    labelColor: Colors.white,
+    dividerColor: Colors.transparent,
+    controller: tabController,
+    tabs: [
+      Tab(
+        text: "PlayList",
+      ),
+      Tab(
+        text: "MCQs",
+      ),
+      Tab(
+        text: "Notes",
       ),
     ],
   );
@@ -101,13 +125,37 @@ courseImage(BuildContext context, String image) {
     decoration: BoxDecoration(
       border: Border.all(color: textWhiteColor, width: 2),
       borderRadius: BorderRadius.circular(30),
-      color: Colors.white,
     ),
     child: ClipRRect(
       borderRadius: BorderRadius.circular(30),
       child: ColorFiltered(
         colorFilter: ColorFilter.mode(
-          Colors.white.withOpacity(0.6), // 40% opacity
+          Colors.white.withOpacity(0.7), // 40% opacity
+          BlendMode.dstATop,
+        ),
+        child: Image.asset(
+          "assets/images/$image",
+          filterQuality: FilterQuality.high,
+          fit: BoxFit.fill,
+        ),
+      ),
+    ),
+  );
+}
+
+courseContentImage(BuildContext context, String image) {
+  return Container(
+    height: ResponsiveScreen.height(context) * 0.245,
+    width: ResponsiveScreen.width(context) * 0.820,
+    decoration: BoxDecoration(
+      border: Border.all(color: primaryTextColor, width: 2),
+      borderRadius: BorderRadius.circular(40),
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(40),
+      child: ColorFiltered(
+        colorFilter: ColorFilter.mode(
+          Colors.white.withOpacity(0.7), // 40% opacity
           BlendMode.dstATop,
         ),
         child: Image.asset(
