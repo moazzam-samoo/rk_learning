@@ -3,16 +3,21 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+///This Class have the all Logic of Sign in with Google
+///its handel all validations and other things.
 class Authentication {
   static Future<User?> signInWithGoogle() async {
+    //created the instance/object of FirebaseAuth class.
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
+    //calling the Google Sign in method form Google Sign Package/Dependency
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
     final GoogleSignInAccount? googleSignInAccount =
         await googleSignIn.signIn();
 
+    //Checking if user is present then proceed
     if (googleSignInAccount != null) {
       EasyLoading.show(status: "Please Wait...");
       final GoogleSignInAuthentication googleSignInAuthentication =
@@ -22,7 +27,7 @@ class Authentication {
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
-
+      //Here Checking the Validations for user <Expectation Handling Process>
       try {
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
@@ -45,6 +50,7 @@ class Authentication {
     return user;
   }
 
+  //Calling SignOut Function for SignOut the user Form App.
   static Future<void> signOut() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
 

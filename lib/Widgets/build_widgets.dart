@@ -1,26 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rk_learning/Widgets/reuseable_widgets.dart';
-
 import '../Constants/colors.dart';
 import '../Constants/responsive_screen.dart';
-import '../Screens/Welcome Screen/welcome_screen.dart';
-import 'build_screens_tabBar.dart';
 
-buildImage(BuildContext context) {
-  double height = (((MediaQuery.of(context).size.height) - 70) / 2);
-  double width = (((MediaQuery.of(context).size.width) - 2));
-  return Container(
-      height: height,
-      width: width,
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage('assets/icons/app_logo.png'),
-        fit: BoxFit.fill,
-      )));
-}
-
-// --> Whole for BuildTabBar
+/// --> This is Whole For Tab Bars...
+//Tab Bar that is showing in Welcome Screen
 buildWelcomeTabBar(TabController tabController) {
   return TabBar(
     indicator: CircleTabIndicator(
@@ -48,6 +33,7 @@ buildWelcomeTabBar(TabController tabController) {
   );
 }
 
+//Tab Bar that is Showing in Course Content Screen
 buildCourseContentTabBar(TabController tabController) {
   return TabBar(
     physics: const ClampingScrollPhysics(),
@@ -57,7 +43,7 @@ buildCourseContentTabBar(TabController tabController) {
     labelColor: Colors.white,
     dividerColor: Colors.transparent,
     controller: tabController,
-    tabs: [
+    tabs: const [
       Tab(
         text: "PlayList",
       ),
@@ -71,6 +57,7 @@ buildCourseContentTabBar(TabController tabController) {
   );
 }
 
+//Decoration Class For tab Bar... Note <Ignore it its nothing just an small dot indicator>
 class CircleTabIndicator extends Decoration {
   final Color color;
   double radius;
@@ -98,8 +85,9 @@ class _CirclePainter extends BoxPainter {
     canvas.drawCircle(circleOffset, radius, paint);
   }
 }
-// --> Whole for BuildTabBar
+// --> Whole for BuildTabBar Ended...
 
+///Purchase button that is present in <courseScreen>
 purchaseButton(VoidCallback onTab, BuildContext context) {
   return GestureDetector(
     onTap: () {},
@@ -117,6 +105,7 @@ purchaseButton(VoidCallback onTab, BuildContext context) {
   );
 }
 
+//Course Image that is present in <courseScreen>
 courseImage(BuildContext context, String image) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 16.w),
@@ -143,6 +132,7 @@ courseImage(BuildContext context, String image) {
   );
 }
 
+//Course Image that is present in <CourseContent Screen>
 courseContentImage(BuildContext context, String image) {
   return Container(
     height: ResponsiveScreen.height(context) * 0.245,
@@ -168,6 +158,7 @@ courseContentImage(BuildContext context, String image) {
   );
 }
 
+//Contact button that is present in <contactScreen>
 contactButton(
   BuildContext context,
   String title,

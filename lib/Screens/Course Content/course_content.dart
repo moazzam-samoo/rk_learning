@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rk_learning/Constants/colors.dart';
 import 'package:rk_learning/Constants/responsive_screen.dart';
-import 'package:rk_learning/Widgets/build_screens_tabBar.dart';
+import 'package:rk_learning/Widgets/tabbar_screens_.dart';
 import 'package:rk_learning/Widgets/build_widgets.dart';
 import 'package:rk_learning/Widgets/reuseable_widgets.dart';
 
+///This Screen Contains All the Data that is available in Course.
+///Course Data will Come's form firebase database this class will get these data.
 class CourseContent extends StatefulWidget {
   final int selectedIndex;
   const CourseContent({super.key, required this.selectedIndex});
@@ -90,24 +90,3 @@ class _CourseContentState extends State<CourseContent>
     );
   }
 }
-// ListView(
-// children: [
-// Container(
-// width: ResponsiveScreen.width(context),
-// height: ResponsiveScreen.height(context) * 0.4,
-// decoration: BoxDecoration(
-// color: containerColor,
-// borderRadius: const BorderRadius.only(
-// bottomLeft: Radius.circular(40),
-// bottomRight: Radius.circular(40),
-// topLeft: Radius.circular(40),
-// topRight: Radius.circular(40)),
-// border: Border.all(color: shadowColor)),
-// child:
-// ),
-// SizedBox(
-// height: 20.h,
-// ),
-// buildCourseContentTabBar(tabController)
-// ],
-// ),

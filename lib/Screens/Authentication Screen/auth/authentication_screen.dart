@@ -42,6 +42,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                 SizedBox(
                   height: 38.h,
                 ),
+
+                /// Calling the button Widget that contain Login to navigate
+                /// and Other properties as well.
                 const GoogleButton(),
               ],
             ),

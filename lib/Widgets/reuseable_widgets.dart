@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+//This Reuseable Text used every where in app. For showing the text.
 Widget reuseText(
     String text, double fontSize, FontWeight? fontWeight, Color color,
     {int maxWords = -1, TextAlign? textAlign}) {

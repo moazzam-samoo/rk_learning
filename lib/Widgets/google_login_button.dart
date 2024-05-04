@@ -7,10 +7,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rk_learning/Constants/colors.dart';
 import 'package:rk_learning/Screens/Welcome%20Screen/welcome_screen.dart';
 import 'package:rk_learning/Widgets/reuseable_widgets.dart';
-
 import '../Constants/responsive_screen.dart';
 import '../Screens/Authentication Screen/google_auth.dart';
 
+///This is the Google Sign In Button that is called in Authentication Screen
+///this button ensures the user and navigate it to welcome Screen.
 class GoogleButton extends StatefulWidget {
   const GoogleButton({super.key});
 
@@ -36,8 +37,6 @@ class _GoogleButtonState extends State<GoogleButton>
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addObserver(this);
-    double height = (((MediaQuery.of(context).size.height) - 200) / 11);
-    double width = (((MediaQuery.of(context).size.width) - 2));
 
     return CupertinoButton(
       padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 5.w),

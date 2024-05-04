@@ -1,8 +1,10 @@
-// For App UI
-import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+library;
 
-//For App Buttons
+/// These colors are defined for the UI and are used throughout the interface.
+
+import 'package:flutter/material.dart';
+
+///Defined App Colors For Text, Background, Containers etc...
 
 //Background Gradient Color
 const firstPrimaryBg = Color(0xff0A0121);
@@ -22,25 +24,17 @@ const primaryTextColor = Color(0xffFFFFFF);
 const secondaryTextColor = Color(0xff5F6079);
 const thirdTextColor = Color(0xff4d4e66);
 
-//TODO Defined Gradient Colors for Application
+/// Defined Gradient Colors for Application
 Gradient backgroundGradientColor() {
   return const LinearGradient(colors: [firstPrimaryBg, secondPrimaryBg]);
 }
 
+///Defined Gradient color for Button
 Gradient buttonGradientColor() {
-  return const LinearGradient(colors: [
-    buttonFirstColor,
-    buttonSecondColor
-  ]);
+  return const LinearGradient(colors: [buttonFirstColor, buttonSecondColor]);
 }
 
-const double kPadding = 18.0;
-
-final loading = EasyLoading.instance;
-easyLoadingStyle() {
-  EasyLoadingStyle.light;
-}
-
+//TODO Remove these Colors its not workable now.
 //App Basic Colors
 const primaryBackgroundColor = Color(0xff383f3f);
 const secondaryBackgroundColor = Color(0xff232F34);

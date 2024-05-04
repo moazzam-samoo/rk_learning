@@ -23,36 +23,10 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(360, 640),
       builder: (context, child) => MaterialApp(
-        title: 'Flutter Demo',
+        title: 'RK Learning',
         theme: ThemeData(
-          textTheme: TextTheme(
-              displayLarge: TextStyle(
-                  fontSize: 21.sp,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "primaryFont",
-                  color: textWhiteColor),
-              headlineSmall: TextStyle(
-                  fontSize: 21.sp,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "primaryFont",
-                  color: shadowColor),
-              displayMedium: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "primaryFont",
-                  color: textSecondary),
-              displaySmall: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "primaryFont",
-                  color: textWhiteColor),
-              headlineMedium: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "welcomeFont",
-                  color: textWhiteColor)),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          appBarTheme: const AppBarTheme(color: secondaryBackgroundColorII),
+          appBarTheme: const AppBarTheme(color: firstPrimaryBg),
           scaffoldBackgroundColor: firstPrimaryBg,
           useMaterial3: true,
         ),

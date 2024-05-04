@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rk_learning/Widgets/reuseable_widgets.dart';
-
 import '../Constants/colors.dart';
 import '../Constants/responsive_screen.dart';
 import '../Screens/Course Content/course_content.dart';
 import 'build_widgets.dart';
 import 'navigate_links_to_other_platform.dart';
 
+///Course Screen that its show how many courses are present,
+///and just show the simple course title text etc.
 courseScreen() {
   return ListView.builder(
       physics: const BouncingScrollPhysics(),
@@ -52,6 +53,7 @@ courseScreen() {
       });
 }
 
+///Test Screen that its show how many Tests/MCQs are present,
 testScreen() {
   return ListView.builder(
       physics: const BouncingScrollPhysics(),
@@ -101,6 +103,7 @@ testScreen() {
       });
 }
 
+///Notification Screen that its show how many Notifications are present,
 notificationScreen() {
   return ListView.builder(
     physics: const BouncingScrollPhysics(),
@@ -184,6 +187,8 @@ notificationScreen() {
   );
 }
 
+///Contact Screen that its show all the contacts when user click
+///any contact it will navigate user to that platform
 contactScreen(BuildContext context) {
   return Container(
     margin: EdgeInsets.symmetric(vertical: 30.h, horizontal: 15.w),

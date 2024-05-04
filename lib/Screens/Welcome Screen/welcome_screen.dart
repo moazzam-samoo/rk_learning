@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rk_learning/Constants/responsive_screen.dart';
 import 'package:rk_learning/Screens/Welcome%20Screen/Conopnents%20Of%20WelcomeScreen/components_of_welcomescreen.dart';
-import 'package:rk_learning/Widgets/build_screens_tabBar.dart';
+import 'package:rk_learning/Widgets/tabbar_screens_.dart';
 import 'package:rk_learning/Widgets/build_widgets.dart';
 import 'package:rk_learning/Widgets/custom_drawer.dart';
 
