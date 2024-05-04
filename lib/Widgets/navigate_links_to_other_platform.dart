@@ -1,5 +1,5 @@
-
 import 'package:url_launcher/url_launcher.dart';
+
 //for sending user to Other platform for information or contact
 whatsAppLaunchUrl() {
   const link =
@@ -11,7 +11,8 @@ whatsAppLaunchUrl() {
 }
 
 instagramLaunchUrl() {
-  const link = 'https://www.instagram.com/ig_rabiaaa?igsh=d2k5Ymt6cW80dm9j';
+  const link =
+      'https://www.instagram.com/rk_learning?igsh=MWJiMDM3OGEwbGc4Ng==';
   launchUrl(
     Uri.parse(link),
     mode: LaunchMode.platformDefault,
@@ -27,7 +28,7 @@ youTubeLaunchUrl() {
 }
 
 facebookLaunchUrl() {
-  const link = 'https://www.facebook.com/moazzam.samoo?mibextid=ZbWKwL';
+  const link = 'https://www.facebook.com/RklearningOfficial?mibextid=ZbWKwL';
   launchUrl(
     Uri.parse(link),
     mode: LaunchMode.platformDefault,

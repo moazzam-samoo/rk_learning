@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -80,26 +82,23 @@ buildProfileAvatar() {
 }
 
 //Design it Latter <Reminder>
-buildCourseButton(double width, int index, Function() onTab) {
+buildPlayListButton(double width, int index, Function() onTab) {
   return InkWell(
     onTap: onTab,
     child: SizedBox(
-      width: width * 0.35,
+      width: width,
       height: 43,
-      child: Card(
+      child: Container(
           margin: const EdgeInsets.all(0),
-          elevation: 0,
-          color: index == 0 ? shadowColor : primaryBackgroundColor,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(180),
-                bottomRight: Radius.circular(250)),
-          ),
-          child: Center(
+          decoration: BoxDecoration(
+              color: index == 0 ? containerColor : firstPrimaryBg,
+              border: Border.all(color: shadowColor),
+              borderRadius: BorderRadius.circular(40)),
+          child: const Center(
             child: Text(
-              "Course",
+              "PlayList",
               style: TextStyle(
-                  color: index == 0 ? Colors.white : shadowColor,
+                  color: primaryTextColor,
                   fontSize: 18,
                   fontWeight: FontWeight.bold),
             ),
@@ -198,7 +197,6 @@ buildWhatsAppButton(double width, int index, Function() onTab) {
     ),
   );
 }
-
 
 buildCourseData(double height) {
   return SizedBox(

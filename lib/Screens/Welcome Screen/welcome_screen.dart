@@ -30,7 +30,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           children: [
             buildProfilePicAndName(context),
             SizedBox(height: height * 0.01),
-            buildTabBar(tabController),
+            buildWelcomeTabBar(tabController),
             Expanded(
               child: TabBarView(
                 controller: tabController,
