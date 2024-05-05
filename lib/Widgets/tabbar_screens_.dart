@@ -292,6 +292,100 @@ playListScreen() {
       });
 }
 
+quizScreen() {
+  return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemCount: quiz.length,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+          width: ResponsiveScreen.width(context),
+          height: ResponsiveScreen.height(context) * 0.12,
+          decoration: BoxDecoration(
+              color: containerColor,
+              border: Border.all(color: shadowColor, width: 3.w),
+              borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Lottie.asset("assets/animations/mcq.json",
+                    height: 80.h, width: 80.w),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    reuseText(
+                        "${quiz[index]["title"]}",
+                        18,
+                        maxWords: 2,
+                        FontWeight.w400,
+                        primaryTextColor),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Row(
+                      children: [
+                        reuseText("Total MCQs:", 14, FontWeight.normal,
+                            primaryTextColor),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        reuseText(quiz[index]["total"], 16, FontWeight.w400,
+                            secondaryTextColor),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      });
+}
+
+notesScreen() {
+  return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemCount: notes.length,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+          width: ResponsiveScreen.width(context),
+          height: ResponsiveScreen.height(context) * 0.12,
+          decoration: BoxDecoration(
+              color: containerColor,
+              border: Border.all(color: shadowColor, width: 3.w),
+              borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Lottie.asset("assets/animations/notes.json",
+                    height: 80.h, width: 80.w),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: reuseText(
+                          "${notes[index]["title"]}",
+                          20,
+                          maxWords: 2,
+                          FontWeight.w400,
+                          primaryTextColor),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      });
+}
+
 //Dummy Data for Show TODO it wll be replaced with Firebase Database Latter.
 List<Map<String, dynamic>> courses = [
   {
@@ -400,4 +494,28 @@ List<Map<String, dynamic>> playList = [
     "title": "Present Continues",
     "duration": "45:14",
   }
+];
+List<Map<String, dynamic>> quiz = [
+  {"title": "GK Rivers", "total": "40"},
+  {"title": "Math IQ", "total": "30"},
+  {"title": "English", "total": "20"},
+  {"title": "General Knowledge", "total": "10"},
+  {"title": "GK Mountains", "total": "60"},
+  {"title": "Math Average-%", "total": "10"},
+  {"title": "GK PakStudy", "total": "50"},
+  {"title": "GK Countries", "total": "20"},
+  {"title": "GK Flags", "total": "40"},
+  {"title": "Math Percentage", "total": "10"},
+];
+List<Map<String, dynamic>> notes = [
+  {"title": "GK Rivers"},
+  {"title": "Math IQ"},
+  {"title": "English"},
+  {"title": "General Knowledge"},
+  {"title": "GK Mountains"},
+  {"title": "Math Average-%"},
+  {"title": "GK PakStudy"},
+  {"title": "GK Countries"},
+  {"title": "GK Flags"},
+  {"title": "Math Percentage"},
 ];

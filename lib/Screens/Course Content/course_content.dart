@@ -66,14 +66,8 @@ class _CourseContentState extends State<CourseContent>
                         controller: tabController,
                         children: [
                           playListScreen(),
-                          Center(
-                            child: reuseText("MCQs", 18, FontWeight.normal,
-                                primaryTextColor),
-                          ),
-                          Center(
-                            child: reuseText("Notes", 18, FontWeight.normal,
-                                primaryTextColor),
-                          )
+                          quizScreen(),
+                          notesScreen(),
                         ],
                       ),
                     ),
