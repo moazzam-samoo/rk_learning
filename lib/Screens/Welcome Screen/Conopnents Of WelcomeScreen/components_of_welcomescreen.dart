@@ -18,12 +18,14 @@ buildProfilePicAndName(BuildContext context) {
             children: [
               reuseText("Hi,  ", 22, FontWeight.bold, buttonFirstColor,
                   textAlign: TextAlign.center),
-              Text(
+              reuseText(
                   FirebaseAuth.instance.currentUser!.displayName
                       .toString()
                       .split(" ")[0]
                       .capitalize(),
-                  style: Theme.of(context).textTheme.displayLarge),
+                  28,
+                  FontWeight.normal,
+                  primaryTextColor)
             ],
           ),
           reuseText(" Welcome Back!", 24, FontWeight.w400, secondaryTextColor)

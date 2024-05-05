@@ -65,10 +65,7 @@ class _CourseContentState extends State<CourseContent>
                       child: TabBarView(
                         controller: tabController,
                         children: [
-                          Center(
-                            child: reuseText("PlayList", 18, FontWeight.normal,
-                                primaryTextColor),
-                          ),
+                          playListScreen(),
                           Center(
                             child: reuseText("MCQs", 18, FontWeight.normal,
                                 primaryTextColor),

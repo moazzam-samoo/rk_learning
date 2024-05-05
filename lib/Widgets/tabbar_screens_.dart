@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rk_learning/Widgets/reuseable_widgets.dart';
 import '../Constants/colors.dart';
 import '../Constants/responsive_screen.dart';
@@ -225,6 +226,72 @@ contactScreen(BuildContext context) {
   );
 }
 
+playListScreen() {
+  return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemCount: playList.length,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+          width: ResponsiveScreen.width(context),
+          height: ResponsiveScreen.height(context) * 0.12,
+          decoration: BoxDecoration(
+              color: containerColor,
+              border: Border.all(color: shadowColor, width: 3.w),
+              borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Lottie.asset("assets/animations/play.json",
+                    height: 80.h, width: 80.w),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        reuseText(
+                            "${playList[index]["course"]}:",
+                            14,
+                            maxWords: 2,
+                            FontWeight.w400,
+                            primaryTextColor),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        reuseText(
+                            playList[index]["title"],
+                            15,
+                            maxWords: 3,
+                            FontWeight.normal,
+                            secondaryTextColor),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Row(
+                      children: [
+                        reuseText("Duration:", 18, FontWeight.normal,
+                            primaryTextColor),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        reuseText(playList[index]["duration"], 16,
+                            FontWeight.w400, secondaryTextColor),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      });
+}
+
 //Dummy Data for Show TODO it wll be replaced with Firebase Database Latter.
 List<Map<String, dynamic>> courses = [
   {
@@ -295,5 +362,42 @@ List<Map<String, dynamic>> notifications = [
     "author": "Dr.Waheed",
     "noti":
         "The sun cast a warm glow over the city, peeking through the clouds.Birds chirped happily in the treetops, a melody of nature's song. their voices like music."
+  }
+];
+List<Map<String, dynamic>> playList = [
+  {
+    "course": "English",
+    "title": "Past Present Tense",
+    "duration": "45:34",
+  },
+  {
+    "course": "Math",
+    "title": "Simple IQ",
+    "duration": "10:44",
+  },
+  {
+    "course": "General Knowledge",
+    "title": "Nehru Report",
+    "duration": "15:31",
+  },
+  {
+    "course": "Pakistan Study",
+    "title": "Chain Relations",
+    "duration": "18:12",
+  },
+  {
+    "course": "Math",
+    "title": "Matrix Multiplication",
+    "duration": "25:23",
+  },
+  {
+    "course": "General Knowledge",
+    "title": "Mountains",
+    "duration": "13:14",
+  },
+  {
+    "course": "English",
+    "title": "Present Continues",
+    "duration": "45:14",
   }
 ];
