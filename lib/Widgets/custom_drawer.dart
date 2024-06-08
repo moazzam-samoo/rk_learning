@@ -21,7 +21,7 @@ class CustomDrawer extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(
                   left: 70.w, right: 70.w, bottom: 60.h, top: 24.h),
-              child: Lottie.asset("assets/animations/circle.json"),
+              child: Lottie.asset("assets/animations/logo_rk.json"),
             ),
             buildButton(context, FontAwesomeIcons.arrowRightFromBracket,
                 "Sign Out", const AuthenticationScreen())

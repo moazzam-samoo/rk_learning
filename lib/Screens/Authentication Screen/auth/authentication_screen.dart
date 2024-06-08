@@ -23,7 +23,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Lottie.asset("assets/animations/circle.json"),
+                Lottie.asset("assets/animations/logo_rk.json"),
                 SizedBox(height: 20.h),
                 reuseText(
                   "RK Learning",

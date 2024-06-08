@@ -106,34 +106,56 @@ purchaseButton(VoidCallback onTab, BuildContext context) {
 }
 
 //Course Image that is present in <courseScreen>
-courseImage(BuildContext context, String image) {
+Widget courseImage(BuildContext context, String? image) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 16.w),
     width: ResponsiveScreen.width(context) * 0.39,
     height: ResponsiveScreen.height(context) * 0.150,
     decoration: BoxDecoration(
-      border: Border.all(color: textWhiteColor, width: 2),
       borderRadius: BorderRadius.circular(30),
     ),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(30),
-      child: ColorFiltered(
-        colorFilter: ColorFilter.mode(
-          Colors.white.withOpacity(0.7), // 40% opacity
-          BlendMode.dstATop,
+    child: Stack(
+      fit: StackFit.expand,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(30),
+          child: ColorFiltered(
+            colorFilter: ColorFilter.mode(
+              Colors.white.withOpacity(0.7), // 40% opacity
+              BlendMode.dstATop,
+            ),
+            child: Image.network(
+              image!,
+              filterQuality: FilterQuality.high,
+              fit: BoxFit.fill,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              (loadingProgress.expectedTotalBytes ?? 1)
+                          : null,
+                      strokeWidth: 2, // Adjust thickness of the spinner
+                      valueColor:
+                          const AlwaysStoppedAnimation<Color>(Colors.black),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
         ),
-        child: Image.asset(
-          "assets/images/$image",
-          filterQuality: FilterQuality.high,
-          fit: BoxFit.fill,
-        ),
-      ),
+      ],
     ),
   );
 }
 
 //Course Image that is present in <CourseContent Screen>
-courseContentImage(BuildContext context, String image) {
+courseContentImage(BuildContext context, String? image) {
   return Container(
     height: ResponsiveScreen.height(context) * 0.245,
     width: ResponsiveScreen.width(context) * 0.820,
@@ -148,8 +170,8 @@ courseContentImage(BuildContext context, String image) {
           Colors.white.withOpacity(0.7), // 40% opacity
           BlendMode.dstATop,
         ),
-        child: Image.asset(
-          "assets/images/$image",
+        child: Image.network(
+          image!,
           filterQuality: FilterQuality.high,
           fit: BoxFit.fill,
         ),
@@ -157,7 +179,6 @@ courseContentImage(BuildContext context, String image) {
     ),
   );
 }
-
 //Contact button that is present in <contactScreen>
 contactButton(
   BuildContext context,

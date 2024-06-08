@@ -5,7 +5,7 @@ import 'package:rk_learning/Constants/capitalize.dart';
 import 'package:rk_learning/Constants/colors.dart';
 import 'package:rk_learning/Database/firebase_handler.dart';
 import 'package:rk_learning/Widgets/reuseable_widgets.dart';
-import '../../../Models/course_model.dart';
+import '../../../Models/notification_model.dart';
 
 buildProfilePicAndName(BuildContext context) {
   return Row(
@@ -60,8 +60,8 @@ buildProfileAvatar() {
 
 Widget buildCommunityData(double height) {
   return StreamBuilder(
-    stream: CommunityHandler.getCommunity(),
-    builder: (context, AsyncSnapshot<List<CommunityModel>> snapshot) {
+    stream: NotificationHandler.getNotifications(),
+    builder: (context, AsyncSnapshot<List<NotificationModel>> snapshot) {
       if (snapshot.hasData) {
         return SizedBox(
           height: height * 0.64,
@@ -69,7 +69,7 @@ Widget buildCommunityData(double height) {
             physics: const BouncingScrollPhysics(),
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
-              CommunityModel data = snapshot.data![index];
+              NotificationModel data = snapshot.data![index];
               DateTime date = data.time!.toDate();
               String formattedDate = DateFormat('dd-MMMM-yyyy hh:mm a')
                   .format(date); // Format the date
@@ -133,7 +133,7 @@ Widget buildCommunityData(double height) {
       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
         return const Center(
           child: Text(
-            "You Don't added Any Communities yet",
+            "You Don't added Any Notifications yet",
             style: TextStyle(fontSize: 18, color: Colors.black),
           ),
         );
