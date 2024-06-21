@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+import '../Constants/colors.dart';
 
 class Player extends StatefulWidget {
   final String link;
@@ -20,6 +23,15 @@ class _PlayerState extends State<Player> {
     _controller = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId(widget.link)!,
       flags: const YoutubePlayerFlags(autoPlay: true),
+    );
+    YoutubePlayer(
+      controller: _controller,
+      showVideoProgressIndicator: false,
+      progressIndicatorColor: Colors.amber,
+      progressColors: const ProgressBarColors(
+        playedColor: Colors.amber,
+        handleColor: Colors.amberAccent,
+      ),
     );
     _controller.addListener(_onControllerChange);
   }
@@ -83,6 +95,27 @@ class _PlayerState extends State<Player> {
         height: double.infinity,
         child: YoutubePlayer(
           controller: _controller,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackButton(BuildContext context) {
+    return Positioned(
+      top: 40.h,
+      left: 20.w,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pop();
+        },
+        child: CircleAvatar(
+          backgroundColor: shadowColor,
+          radius: 20.sp,
+          child: Icon(
+            Icons.arrow_back,
+            color: primaryTextColor,
+            size: 24.sp,
+          ),
         ),
       ),
     );

@@ -47,8 +47,11 @@ class _GoogleButtonState extends State<GoogleButton>
           EasyLoading.dismiss();
         }
         if (user != null) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const WelcomeScreen()));
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const WelcomeScreen(),
+            ),
+          );
         }
       },
       child: Container(

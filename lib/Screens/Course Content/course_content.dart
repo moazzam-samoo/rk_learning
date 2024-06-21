@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rk_learning/Constants/colors.dart';
 import 'package:rk_learning/Constants/responsive_screen.dart';
-import 'package:rk_learning/Models/new_course_Model.dart';
+import 'package:rk_learning/Models/course_model.dart';
 import 'package:rk_learning/Widgets/tabbar_screens_.dart';
 import 'package:rk_learning/Widgets/build_widgets.dart';
 import 'package:rk_learning/Widgets/reuseable_widgets.dart';
@@ -36,19 +36,20 @@ class _CourseContentState extends State<CourseContent>
           } else if (snapshot.hasError) {
             return const Center(
               child: Text(
-                "An error occurred while fetching Notifications",
+                "An error occurred while fetching Course",
                 style: TextStyle(fontSize: 18, color: primaryTextColor),
               ),
             );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(
               child: Text(
-                "You haven't added any Notifications yet",
+                "You haven't added any Course yet",
                 style: TextStyle(fontSize: 18, color: primaryTextColor),
               ),
             );
           }
-          final courses = snapshot.data;
+          snapshot.data!.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+          final courses = snapshot.data!;
           return Scaffold(
             backgroundColor: containerColor,
             body: Container(
@@ -59,12 +60,13 @@ class _CourseContentState extends State<CourseContent>
                 children: [
                   Center(
                     child: courseContentImage(
-                        context, courses![widget.selectedIndex].image),
+                        context, courses[widget.selectedIndex].image),
                   ),
                   SizedBox(
                     height: 10.h,
                   ),
                   reuseText(
+                      textAlign: TextAlign.center,
                       "${courses[widget.selectedIndex].title} ${courses[widget.selectedIndex].subtitle}",
                       16,
                       FontWeight.w600,
@@ -95,7 +97,7 @@ class _CourseContentState extends State<CourseContent>
                               children: [
                                 playListScreen(widget.courseID),
                                 quizScreen(widget.courseID),
-                                notesScreen(),
+                                notesScreen(widget.courseID),
                               ],
                             ),
                           ),

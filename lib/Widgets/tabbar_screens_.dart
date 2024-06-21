@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rk_learning/Models/new_course_Model.dart';
+import 'package:rk_learning/Models/course_model.dart';
+import 'package:rk_learning/Widgets/pdf_view.dart';
 import 'package:rk_learning/Widgets/player.dart';
+import 'package:rk_learning/Widgets/request_handler.dart';
 import 'package:rk_learning/Widgets/reuseable_widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../Constants/colors.dart';
 import '../Constants/responsive_screen.dart';
 import '../Database/firebase_handler.dart';
@@ -41,46 +44,96 @@ courseScreen() {
             ),
           );
         }
-        final course = snapshot.data;
+        snapshot.data!.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+        final course = snapshot.data!;
         return ListView.builder(
             physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.vertical,
-            itemCount: course!.length,
+            itemCount: course.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
+                onTap: () async {
+                  String purchasedStatus =
+                      await RequestHandler.checkCoursePurchaseStatus(
+                          course[index].id!);
+                  if (purchasedStatus == 'approved') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
                         builder: (_) => CourseContent(
-                              selectedIndex: index,
-                              courseID: course[index].id!,
-                            ))),
+                          selectedIndex: index,
+                          courseID: course[index].id!,
+                        ),
+                      ),
+                    );
+                  } else if (purchasedStatus == 'pending') {
+                    RequestHandler.showPendingRequestDialog(context);
+                  } else if (purchasedStatus == 'denied') {
+                    RequestHandler.showDeniedRequestDialog(
+                        context, course[index].id!, course[index].title!);
+                  } else {
+                    RequestHandler.showPurchaseDialog(
+                        context, course[index].id!, course[index].title!);
+                  }
+                },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 4.w),
                   width: ResponsiveScreen.width(context),
                   height: ResponsiveScreen.height(context) * 0.18,
                   decoration: BoxDecoration(
-                      color: containerColor,
-                      border: Border.all(color: shadowColor, width: 3.w),
-                      borderRadius: BorderRadius.circular(30)),
+                    color: containerColor,
+                    border: Border.all(color: shadowColor, width: 3.w),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                   child: Row(
                     children: [
                       courseImage(context, course[index].image),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            reuseText(course[index].title!, 16, FontWeight.bold,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              reuseText(
+                                course[index].title ?? "No Title",
+                                16,
+                                FontWeight.bold,
                                 primaryTextColor,
-                                maxWords: 2),
-                            reuseText(course[index].subtitle!, 10,
-                                FontWeight.normal, primaryTextColor),
-                            purchaseButton(() {}, context),
-                          ],
+                                maxLines: 2,
+                                overflow: TextOverflow.visible,
+                              ),
+                              reuseText(
+                                course[index].subtitle ?? "No Subtitle",
+                                10,
+                                FontWeight.normal,
+                                primaryTextColor,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(
+                                height: ResponsiveScreen.height(context) * 0.01,
+                              ),
+                              Row(
+                                children: [
+                                  reuseText(
+                                    "Price: ",
+                                    12,
+                                    FontWeight.normal,
+                                    primaryTextColor,
+                                  ),
+                                  reuseText(
+                                    course[index].price ?? "Free",
+                                    14,
+                                    FontWeight.normal,
+                                    primaryTextColor,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -90,53 +143,47 @@ courseScreen() {
 }
 
 ///Test Screen that its show how many Tests/MCQs are present,
-testScreen() {
-  return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      itemCount: courses.length,
-      itemBuilder: (context, index) {
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-          width: ResponsiveScreen.width(context),
-          height: ResponsiveScreen.height(context) * 0.10,
-          decoration: BoxDecoration(
-              color: containerColor,
-              border: Border.all(color: shadowColor, width: 3.w),
-              borderRadius: BorderRadius.circular(30)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Image.asset(
-                'assets/icons/qna.png',
-                scale: 9,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  reuseText("${courses[index]["title"] + " MCQs"}", 18,
-                      FontWeight.bold, primaryTextColor),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Row(
-                    children: [
-                      reuseText("Total MCQs", 16, FontWeight.w500,
-                          secondaryTextColor),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      reuseText("${courses.length}", 16, FontWeight.w400,
-                          primaryTextColor),
-                    ],
-                  )
-                ],
-              )
-            ],
-          ),
-        );
-      });
+cpnCalculator(TextEditingController test, TextEditingController inter,
+    TextEditingController matric, context, Function() onTab) {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
+    child: GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            reuseText("Sindh University CPN Calculator", 18, FontWeight.normal,
+                secondaryTextColor),
+            SizedBox(
+              height: 15.h,
+            ),
+            cpnTextField(hintText: "Test Marks", controller: test),
+            SizedBox(
+              height: ResponsiveScreen.height(context) * 0.02,
+            ),
+            cpnTextField(
+                hintText: "Intermediate Percentage", controller: inter),
+            SizedBox(
+              height: ResponsiveScreen.height(context) * 0.02,
+            ),
+            cpnTextField(
+                hintText: "Matriculation Percentage", controller: matric),
+            SizedBox(
+              height: ResponsiveScreen.height(context) * 0.03,
+            ),
+            calculateButton(onTab, context)
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+double calculateCPN(double test, double inter, double matric) {
+  return (test * 0.6) + (inter * 0.3) + (matric * 0.1);
 }
 
 ///Notification Screen that its show how many Notifications are present,
@@ -159,7 +206,7 @@ notificationScreen() {
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(
             child: Text(
-              "You haven't added any Notifications yet",
+              "Notifications not Added Yet",
               style: TextStyle(fontSize: 18, color: primaryTextColor),
             ),
           );
@@ -191,7 +238,7 @@ notificationScreen() {
                         Center(
                           child: reuseText(notifications[index].title!, 22,
                               FontWeight.w600, primaryTextColor,
-                              maxWords: 2),
+                              textAlign: TextAlign.center, maxWords: 15),
                         ),
                         const Divider(
                           thickness: 0.2,
@@ -210,12 +257,7 @@ notificationScreen() {
                         SizedBox(
                           height: 15.h,
                         ),
-                        reuseText(
-                          notifications[index].text!,
-                          14,
-                          FontWeight.normal,
-                          primaryTextColor,
-                        ),
+                        buildTextWithLinks(notifications[index].text!),
                         SizedBox(
                           height: 15.h,
                         ),
@@ -251,6 +293,46 @@ notificationScreen() {
           },
         );
       });
+}
+
+Widget buildTextWithLinks(String text) {
+  RegExp linkRegExp = RegExp(r'http(s)?://\S+');
+  Iterable<Match> matches = linkRegExp.allMatches(text);
+
+  List<Widget> widgets = [];
+
+  int lastMatchEnd = 0;
+
+  for (Match match in matches) {
+    if (match.start > lastMatchEnd) {
+      widgets.add(reuseText(text.substring(lastMatchEnd, match.start), 14,
+          FontWeight.normal, primaryTextColor));
+    }
+    String url = text.substring(match.start, match.end);
+    widgets.add(
+      GestureDetector(
+        onTap: () {
+          launch(url);
+        },
+        child: Text(
+          url,
+          style: const TextStyle(
+              color: Colors.blue, decoration: TextDecoration.underline),
+        ),
+      ),
+    );
+    lastMatchEnd = match.end;
+  }
+
+  if (lastMatchEnd < text.length) {
+    widgets.add(reuseText(
+        text.substring(lastMatchEnd), 14, FontWeight.normal, primaryTextColor));
+  }
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: widgets,
+  );
 }
 
 ///Contact Screen that its show all the contacts when user click
@@ -291,9 +373,7 @@ contactScreen(BuildContext context) {
   );
 }
 
-playListScreen(
-  String courseID,
-) {
+playListScreen(String courseID) {
   return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
           .collection('course')
@@ -360,7 +440,7 @@ playListScreen(
                             Row(
                               children: [
                                 reuseText(
-                                    "${playList[index]["course"]}:",
+                                    "Title",
                                     14,
                                     maxWords: 2,
                                     FontWeight.w400,
@@ -497,157 +577,84 @@ quizScreen(String courseID) {
       });
 }
 
-notesScreen() {
-  return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      itemCount: notes.length,
-      itemBuilder: (context, index) {
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-          width: ResponsiveScreen.width(context),
-          height: ResponsiveScreen.height(context) * 0.12,
-          decoration: BoxDecoration(
-              color: containerColor,
-              border: Border.all(color: shadowColor, width: 3.w),
-              borderRadius: BorderRadius.circular(20)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Lottie.asset("assets/animations/notes.json",
-                    height: 80.h, width: 80.w),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: reuseText(
-                          "${notes[index]["title"]}",
-                          20,
-                          maxWords: 2,
-                          FontWeight.w400,
-                          primaryTextColor),
-                    ),
-                  ],
-                )
-              ],
+notesScreen(String courseID) {
+  return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('course')
+          .doc(courseID)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return const Center(
+            child: Text(
+              "An error occurred while fetching Notes",
+              style: TextStyle(fontSize: 18, color: Colors.black),
             ),
-          ),
-        );
+          );
+        } else if (!snapshot.hasData) {
+          return const Center(
+            child: Text(
+              "Notes not Added Yet",
+              style: TextStyle(fontSize: 18, color: Colors.black),
+            ),
+          );
+        }
+        var note = snapshot.data?.get("notes") as List?;
+        if (note == null || note.isEmpty) {
+          return const Center(
+            child: Text("No Notes added yet",
+                style: TextStyle(fontSize: 18, color: Colors.white)),
+          );
+        }
+        return ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemCount: note.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => PDFScreen(
+                          path: note[index]['link'],
+                          title: note[index]['title'])));
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                  width: ResponsiveScreen.width(context),
+                  height: ResponsiveScreen.height(context) * 0.12,
+                  decoration: BoxDecoration(
+                      color: containerColor,
+                      border: Border.all(color: shadowColor, width: 3.w),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Lottie.asset("assets/animations/notes.json",
+                            height: 80.h, width: 80.w),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: reuseText(
+                                  "${note[index]['title']}",
+                                  20,
+                                  maxWords: 2,
+                                  FontWeight.w400,
+                                  primaryTextColor),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
       });
 }
-
-//Dummy Data for Show TODO it wll be replaced with Firebase Database Latter
-List<Map<String, dynamic>> courses = [
-  {
-    "image": "images.jpg",
-    "author": 'Sir Raj Kumar',
-    "title": "Sindh University",
-    "description":
-        "Sindh University is a public research university in Sindh, Pakistan."
-  },
-  {
-    "image": "mehran.jpg",
-    "author": 'Moazzam Samoo',
-    "title": "Mehran University",
-    "description":
-        "Mehran University of Engineering and Technology is a public research university in Jamshoro, Sindh, Pakistan."
-  },
-  {
-    "image": "mehran.jpg",
-    "author": 'Dr.Waheed Jatoi',
-    "title": "Mehran University",
-    "description":
-        "Mehran University of Engineering and Technology is a public research university in Jamshoro, Sindh, Pakistan."
-  },
-  {
-    "image": "mehran.jpg",
-    "author": 'Dr.Asad Buledi',
-    "title": "Mehran University",
-    "description":
-        "Mehran University of Engineering and Technology is a public research university in Jamshoro, Sindh, Pakistan."
-  },
-  {
-    "image": "mehran.jpg",
-    "author": 'Dr.Fida Chandio',
-    "title": "Mehran University",
-    "description":
-        "Mehran University of Engineering and Technology is a public research university in Jamshoro, Sindh, Pakistan."
-  },
-  {
-    "image": "lumhs.jpg",
-    "author": 'Dr.Sumera Dero',
-    "title": "LUMHS University",
-    "description":
-        "Liaquat University of Medical and Health Sciences is a public research university in Jamshoro, Sindh, Pakistan."
-  },
-  {
-    "image": "gc.jpg",
-    "author": 'Dr.Najma Channa',
-    "title": "GC University",
-    "description":
-        "Government College University is a public research university in Faisalabad, Punjab, Pakistan."
-  },
-];
-List<Map<String, dynamic>> playList = [
-  {
-    "course": "English",
-    "title": "Past Present Tense",
-    "duration": "45:34",
-  },
-  {
-    "course": "Math",
-    "title": "Simple IQ",
-    "duration": "10:44",
-  },
-  {
-    "course": "General Knowledge",
-    "title": "Nehru Report",
-    "duration": "15:31",
-  },
-  {
-    "course": "Pakistan Study",
-    "title": "Chain Relations",
-    "duration": "18:12",
-  },
-  {
-    "course": "Math",
-    "title": "Matrix Multiplication",
-    "duration": "25:23",
-  },
-  {
-    "course": "General Knowledge",
-    "title": "Mountains",
-    "duration": "13:14",
-  },
-  {
-    "course": "English",
-    "title": "Present Continues",
-    "duration": "45:14",
-  }
-];
-List<Map<String, dynamic>> quiz = [
-  {"title": "GK Rivers", "total": "40"},
-  {"title": "Math IQ", "total": "30"},
-  {"title": "English", "total": "20"},
-  {"title": "General Knowledge", "total": "10"},
-  {"title": "GK Mountains", "total": "60"},
-  {"title": "Math Average-%", "total": "10"},
-  {"title": "GK PakStudy", "total": "50"},
-  {"title": "GK Countries", "total": "20"},
-  {"title": "GK Flags", "total": "40"},
-  {"title": "Math Percentage", "total": "10"},
-];
-List<Map<String, dynamic>> notes = [
-  {"title": "GK Rivers"},
-  {"title": "Math IQ"},
-  {"title": "English"},
-  {"title": "General Knowledge"},
-  {"title": "GK Mountains"},
-  {"title": "Math Average-%"},
-  {"title": "GK PakStudy"},
-  {"title": "GK Countries"},
-  {"title": "GK Flags"},
-  {"title": "Math Percentage"},
-];

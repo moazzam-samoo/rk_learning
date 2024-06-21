@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../Models/new_course_Model.dart';
+import '../Models/course_model.dart';
 import '../Models/notification_model.dart';
 
 class NotificationHandler {

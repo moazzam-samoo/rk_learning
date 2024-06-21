@@ -33,19 +33,3 @@ Gradient backgroundGradientColor() {
 Gradient buttonGradientColor() {
   return const LinearGradient(colors: [buttonFirstColor, buttonSecondColor]);
 }
-
-//TODO Remove these Colors its not workable now.
-//App Basic Colors
-const primaryBackgroundColor = Color(0xff383f3f);
-const secondaryBackgroundColor = Color(0xff232F34);
-const secondaryBackgroundColorII = Color(0xff4A6572);
-const primaryContainerColor = Color(0xff97a8b2);
-
-//Button Colors
-const primaryButtonColor = Color(0xffF9AA33);
-const primaryShadowColor = Color(0xffF9AA83);
-
-//Text Colors
-const textWhiteColor = Color(0xffFFFFFF);
-Color textSecondary = const Color(0xffF9AA33);
-// For Text

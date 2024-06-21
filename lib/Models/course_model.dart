@@ -9,9 +9,11 @@ class NewCourseModel {
   final List? playlist;
   final List? mcq;
   final List? notes;
+  final Timestamp? createdAt;
 
   NewCourseModel(
       {this.playlist,
+      this.createdAt,
       this.mcq,
       this.subtitle,
       this.price,
@@ -30,6 +32,7 @@ class NewCourseModel {
         image: snapshot['image'],
         playlist: snapshot['playlist'],
         notes: snapshot['notes'],
+        createdAt: snapshot['createdAt'],
         mcq: snapshot['mcq']);
   }
 
@@ -41,6 +44,7 @@ class NewCourseModel {
         'image': image,
         'playlist': playlist,
         'mcq': mcq,
+        'createdAt': createdAt,
         'notes': notes
       };
 }

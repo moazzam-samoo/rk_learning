@@ -4,35 +4,6 @@ import 'package:rk_learning/Widgets/reuseable_widgets.dart';
 import '../Constants/colors.dart';
 import '../Constants/responsive_screen.dart';
 
-/// --> This is Whole For Tab Bars...
-//Tab Bar that is showing in Welcome Screen
-buildWelcomeTabBar(TabController tabController) {
-  return TabBar(
-    indicator: CircleTabIndicator(
-      color: buttonFirstColor,
-      radius: 4,
-    ),
-    unselectedLabelColor: secondaryTextColor,
-    labelColor: Colors.white,
-    dividerColor: Colors.transparent,
-    controller: tabController,
-    tabs: const [
-      Tab(
-        text: "Courses",
-      ),
-      Tab(
-        text: "Test",
-      ),
-      Tab(
-        text: "Notification",
-      ),
-      Tab(
-        text: "Contact",
-      ),
-    ],
-  );
-}
-
 //Tab Bar that is Showing in Course Content Screen
 buildCourseContentTabBar(TabController tabController) {
   return TabBar(
@@ -57,50 +28,20 @@ buildCourseContentTabBar(TabController tabController) {
   );
 }
 
-//Decoration Class For tab Bar... Note <Ignore it its nothing just an small dot indicator>
-class CircleTabIndicator extends Decoration {
-  final Color color;
-  double radius;
-
-  CircleTabIndicator({required this.color, required this.radius});
-
-  @override
-  BoxPainter createBoxPainter([VoidCallback? onChanged]) {
-    return _CirclePainter(color: color, radius: radius);
-  }
-}
-
-class _CirclePainter extends BoxPainter {
-  final double radius;
-  late Color color;
-  _CirclePainter({required this.color, required this.radius});
-
-  @override
-  void paint(Canvas canvas, Offset offset, ImageConfiguration cfg) {
-    late Paint paint;
-    paint = Paint()..color = color;
-    paint = paint..isAntiAlias = true;
-    final Offset circleOffset =
-        offset + Offset(cfg.size!.width / 2, cfg.size!.height - radius);
-    canvas.drawCircle(circleOffset, radius, paint);
-  }
-}
-// --> Whole for BuildTabBar Ended...
-
-///Purchase button that is present in <courseScreen>
-purchaseButton(VoidCallback onTab, BuildContext context) {
+///Calculate button that is present in <courseScreen> . That calculates the CPN
+calculateButton(Function() onTab, BuildContext context) {
   return GestureDetector(
-    onTap: () {},
+    onTap: onTab,
     child: Container(
       alignment: Alignment.center,
       margin: EdgeInsets.symmetric(vertical: 16.h),
       height: ResponsiveScreen.height(context) * 0.05,
-      width: ResponsiveScreen.width(context) * 0.240,
+      width: ResponsiveScreen.width(context) * 0.450,
       decoration: BoxDecoration(
           gradient: buttonGradientColor(),
           borderRadius: BorderRadius.circular(30),
           border: Border.all(color: shadowColor, width: 1)),
-      child: reuseText("BUY", 14, FontWeight.normal, primaryTextColor),
+      child: reuseText("Calculate", 14, FontWeight.normal, primaryTextColor),
     ),
   );
 }
@@ -108,9 +49,9 @@ purchaseButton(VoidCallback onTab, BuildContext context) {
 //Course Image that is present in <courseScreen>
 Widget courseImage(BuildContext context, String? image) {
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 16.w),
-    width: ResponsiveScreen.width(context) * 0.39,
-    height: ResponsiveScreen.height(context) * 0.150,
+    margin: const EdgeInsets.symmetric(horizontal: 16),
+    width: MediaQuery.of(context).size.width * 0.39,
+    height: MediaQuery.of(context).size.height * 0.150,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(30),
     ),
@@ -124,29 +65,26 @@ Widget courseImage(BuildContext context, String? image) {
               Colors.white.withOpacity(0.7), // 40% opacity
               BlendMode.dstATop,
             ),
-            child: Image.network(
-              image!,
-              filterQuality: FilterQuality.high,
-              fit: BoxFit.fill,
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) {
-                  return child;
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              (loadingProgress.expectedTotalBytes ?? 1)
-                          : null,
-                      strokeWidth: 2, // Adjust thickness of the spinner
-                      valueColor:
-                          const AlwaysStoppedAnimation<Color>(Colors.black),
+            child: image != null
+                ? Image.network(
+                    image,
+                    filterQuality: FilterQuality.high,
+                    fit: BoxFit.fill,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return const Center(
+                          child: Icon(
+                        Icons.image_rounded,
+                        size: 40,
+                      ));
+                    },
+                  )
+                : const Center(
+                    child: Text(
+                      'No Image Provided',
+                      style: TextStyle(color: Colors.red),
                     ),
-                  );
-                }
-              },
-            ),
+                  ),
           ),
         ),
       ],
@@ -170,15 +108,31 @@ courseContentImage(BuildContext context, String? image) {
           Colors.white.withOpacity(0.7), // 40% opacity
           BlendMode.dstATop,
         ),
-        child: Image.network(
-          image!,
-          filterQuality: FilterQuality.high,
-          fit: BoxFit.fill,
-        ),
+        child: image != null
+            ? Image.network(
+                image,
+                filterQuality: FilterQuality.high,
+                fit: BoxFit.fill,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return const Center(
+                      child: Icon(
+                    Icons.image,
+                    size: 40,
+                  ));
+                },
+              )
+            : const Center(
+                child: Text(
+                  'No Image Provided',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
       ),
     ),
   );
 }
+
 //Contact button that is present in <contactScreen>
 contactButton(
   BuildContext context,
@@ -210,5 +164,41 @@ contactButton(
         ],
       ),
     ),
+  );
+}
+
+cpnTextField(
+    {required String hintText, required TextEditingController controller}) {
+  return TextField(
+    keyboardType: TextInputType.number,
+    maxLines: 1,
+    textInputAction: TextInputAction.done,
+    controller: controller,
+    cursorColor: primaryTextColor,
+    showCursor: true,
+    style: TextStyle(
+        color: primaryTextColor,
+        fontWeight: FontWeight.normal,
+        fontSize: 14.sp),
+    decoration: InputDecoration(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: primaryTextColor, // Set border color here
+            width: 1.5.w, // Set border width here
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: shadowColor, // Set border color here
+            width: 1.5.w, // Set border width here
+          ),
+        ),
+        hintStyle: TextStyle(
+            color: primaryTextColor,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.normal),
+        hintText: hintText),
   );
 }
