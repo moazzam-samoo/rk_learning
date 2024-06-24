@@ -89,15 +89,16 @@ class _ResultScreenState extends State<ResultScreen> {
                             _status(
                                 result < 40
                                     ? "F"
-                                    : result == 40
+                                    : result >= 40 && result < 50
                                         ? "C"
-                                        : result == 50
+                                        : result >= 50 && result < 60
                                             ? "C+"
-                                            : result == 60
+                                            : result >= 60 && result < 70
                                                 ? "B"
-                                                : result == 70
+                                                : result >= 70 && result < 80
                                                     ? "B+"
-                                                    : result == 80
+                                                    : result >= 80 &&
+                                                            result < 90
                                                         ? "A"
                                                         : "A+",
                                 "Grade",
@@ -120,15 +121,15 @@ class _ResultScreenState extends State<ResultScreen> {
                             textAlign: TextAlign.center,
                             result > 80
                                 ? "Outstanding performance! Keep up the excellent work."
-                                : result == 80
+                                : result > 70
                                     ? "Great job! Your hard work and dedication are paying off."
-                                    : result == 70
+                                    : result >= 60 && result < 70
                                         ? "Good work, but there's still room for improvement. Keep pushing yourself!"
-                                        : result == 60
+                                        : result >= 50 && result < 60
                                             ? "Solid effort, but there are areas where you can excel even more with extra focus."
-                                            : result == 50
+                                            : result >= 40 && result < 50
                                                 ? "Some improvement needed. Let's work together to raise your performance."
-                                                : result == 40
+                                                : result < 40
                                                     ? "Work harder to meet expectations. I believe you can do better."
                                                     : "This grade shows significant improvement is needed. Let's discuss strategies to help you succeed.",
                             13,

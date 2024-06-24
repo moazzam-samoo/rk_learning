@@ -127,11 +127,11 @@ class _MCQState extends State<MCQ> {
                       : primaryTextColor),
               width: ans == selectedIndex
                   ? (selectedIndex + 1 == widget.mcq[index]['correct']
-                      ? 4 // Width for correct answer
-                      : 4) // Width for wrong answer
+                      ? 2 // Width for correct answer
+                      : 2) // Width for wrong answer
                   : (ans + 1 == widget.mcq[index]['correct'] &&
                           selectedIndex > -1
-                      ? 4 // Width for correct answer
+                      ? 2 // Width for correct answer
                       : 2), // Width for wrong answer
             ),
           ),
@@ -150,7 +150,7 @@ class _MCQState extends State<MCQ> {
                                 : ans == 2
                                     ? "C"
                                     : "D",
-                        28,
+                        20,
                         FontWeight.bold,
                         ans == selectedIndex
                             ? (selectedIndex + 1 == widget.mcq[index]['correct']
@@ -168,7 +168,7 @@ class _MCQState extends State<MCQ> {
                     child: reuseText(
                       maxLines: 2,
                       widget.mcq[index]['ans'][ans] ?? '',
-                      18,
+                      16,
                       FontWeight.w500,
                       Colors.white,
                     ),
@@ -178,17 +178,17 @@ class _MCQState extends State<MCQ> {
                       ? (selectedIndex + 1 == widget.mcq[index]['correct']
                           ? const Icon(
                               Icons.done,
-                              color: Colors.white,
+                              color: Colors.green,
                             )
                           : const Icon(
                               Icons.close,
-                              color: Colors.white,
+                              color: Colors.red,
                             ))
                       : (ans + 1 == widget.mcq[index]['correct'] &&
                               selectedIndex > -1
                           ? const Icon(
                               Icons.done,
-                              color: Colors.white,
+                              color: Colors.green,
                             )
                           : const SizedBox()),
                 ],
@@ -202,11 +202,11 @@ class _MCQState extends State<MCQ> {
     return Center(
       child: CircleAvatar(
         backgroundColor: primaryTextColor,
-        radius: 60.sp,
+        radius: 42.sp,
         child: CircleAvatar(
           backgroundColor: shadowColor,
-          radius: 55.sp,
-          child: reuseText("${index + 1}/${widget.mcq.length}", 22,
+          radius: 40.sp,
+          child: reuseText("${index + 1}/${widget.mcq.length}", 18,
               FontWeight.w700, primaryTextColor),
         ),
       ),
@@ -228,9 +228,9 @@ class _MCQState extends State<MCQ> {
             Center(
               child: reuseText(
                 "Question",
-                16,
+                14,
                 FontWeight.w600,
-                primaryTextColor,
+                secondaryTextColor,
               ),
             ),
             const Divider(
@@ -240,7 +240,7 @@ class _MCQState extends State<MCQ> {
             SizedBox(height: 5.h),
             reuseText(
                 widget.mcq[index]['questions'] ?? '',
-                20,
+                16,
                 maxLines: 5,
                 FontWeight.normal,
                 primaryTextColor)
@@ -263,7 +263,7 @@ class _MCQState extends State<MCQ> {
           }
         },
         child: Container(
-            height: ResponsiveScreen.height(context) * 0.08,
+            height: ResponsiveScreen.height(context) * 0.06,
             width: ResponsiveScreen.width(context) * width,
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -277,7 +277,7 @@ class _MCQState extends State<MCQ> {
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 20),
+                  fontSize: 18),
             )),
       ),
     );

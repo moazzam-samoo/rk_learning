@@ -422,7 +422,6 @@ playListScreen(String courseID) {
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
                   width: ResponsiveScreen.width(context),
-                  height: ResponsiveScreen.height(context) * 0.12,
                   decoration: BoxDecoration(
                       color: containerColor,
                       border: Border.all(color: shadowColor, width: 3.w),
@@ -432,45 +431,48 @@ playListScreen(String courseID) {
                     child: Row(
                       children: [
                         Lottie.asset("assets/animations/play.json",
-                            height: 80.h, width: 80.w),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                reuseText(
-                                    "Title",
-                                    14,
-                                    maxWords: 2,
-                                    FontWeight.w400,
-                                    primaryTextColor),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                reuseText(
-                                    playlist[index]["title"],
-                                    15,
-                                    maxWords: 3,
-                                    FontWeight.normal,
-                                    secondaryTextColor),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5.h,
-                            ),
-                            Row(
-                              children: [
-                                reuseText("Duration:", 18, FontWeight.normal,
-                                    primaryTextColor),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                reuseText(playlist[index]["time"], 16,
-                                    FontWeight.w400, secondaryTextColor),
-                              ],
-                            )
-                          ],
+                            height: 50.h, width: 50.w),
+                        SizedBox(width: 10.w),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              reuseText(
+                                  playlist[index]['category'],
+                                  16,
+                                  maxWords: 2,
+                                  FontWeight.w400,
+                                  primaryTextColor),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              reuseText(
+                                  playlist[index]['title'],
+                                  15,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxWords: 6,
+                                  FontWeight.normal,
+                                  secondaryTextColor),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.timelapse_outlined,
+                                    color: primaryTextColor,
+                                  ),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  reuseText(playlist[index]["time"], 14,
+                                      FontWeight.w400, secondaryTextColor),
+                                ],
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -541,14 +543,17 @@ quizScreen(String courseID) {
                     child: Row(
                       children: [
                         Lottie.asset("assets/animations/mcq.json",
-                            height: 80.h, width: 80.w),
+                            height: 50.h, width: 50.w),
+                        SizedBox(
+                          width: 10.w,
+                        ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             reuseText(
                                 "${mcq[index]["title"]}",
-                                18,
+                                16,
                                 maxWords: 2,
                                 FontWeight.w400,
                                 primaryTextColor),
@@ -557,12 +562,12 @@ quizScreen(String courseID) {
                             ),
                             Row(
                               children: [
-                                reuseText("Total MCQs:", 14, FontWeight.normal,
+                                reuseText("Total MCQs:", 12, FontWeight.normal,
                                     primaryTextColor),
                                 SizedBox(
                                   width: 10.w,
                                 ),
-                                reuseText(questionsLength.toString(), 16,
+                                reuseText(questionsLength.toString(), 14,
                                     FontWeight.w400, secondaryTextColor),
                               ],
                             )
@@ -625,7 +630,6 @@ notesScreen(String courseID) {
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
                   width: ResponsiveScreen.width(context),
-                  height: ResponsiveScreen.height(context) * 0.12,
                   decoration: BoxDecoration(
                       color: containerColor,
                       border: Border.all(color: shadowColor, width: 3.w),
@@ -635,20 +639,22 @@ notesScreen(String courseID) {
                     child: Row(
                       children: [
                         Lottie.asset("assets/animations/notes.json",
-                            height: 80.h, width: 80.w),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: reuseText(
-                                  "${note[index]['title']}",
-                                  20,
-                                  maxWords: 2,
-                                  FontWeight.w400,
-                                  primaryTextColor),
-                            ),
-                          ],
+                            height: 50.h, width: 50.w),
+                        SizedBox(width: 10.w),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Center(
+                                child: reuseText(
+                                    note[index]['title'],
+                                    16,
+                                    maxWords: 2,
+                                    maxLines: 2,
+                                    FontWeight.w400,
+                                    primaryTextColor),
+                              ),
+                            ],
+                          ),
                         )
                       ],
                     ),

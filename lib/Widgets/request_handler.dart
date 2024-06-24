@@ -79,81 +79,94 @@ class RequestHandler {
 
   static void showPurchaseDialog(
       BuildContext context, String courseId, String courseTitle) {
+    bool isRequestSent = false;
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: containerColor,
-          title:
-              reuseText("Enroll Now!", 20, FontWeight.w400, primaryTextColor),
-          content: SizedBox(
-            height: ResponsiveScreen.height(context) * 0.430,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                reuseText(
-                    'Unlock Your Future: Enroll Now and Transform Your Career!',
-                    14,
-                    FontWeight.normal,
-                    Colors.white),
-                SizedBox(
-                  height: 10.h,
-                ),
-                reuseText('Pay Now With', 16, FontWeight.w500, Colors.white),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      "assets/icons/easypaisa.png",
-                      scale: 9,
-                    ),
-                    reuseText('Easypaisa: 0313-0339546', 14, FontWeight.w300,
-                        Colors.white),
-                  ],
-                ),
-                SizedBox(height: 20.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      "assets/icons/jazz.png",
-                      scale: 9,
-                    ),
-                    reuseText('Jazz Cash: 0313-0339546', 14, FontWeight.w300,
-                        Colors.white),
-                  ],
-                ),
-                SizedBox(height: 20.h),
-                reuseText('For Bank account WhatsApp us', 16, FontWeight.w400,
-                    Colors.white),
-                SizedBox(height: 20.h),
-                reuseText(
-                    'Dear Student, \nTo access the course, kindly complete your payment and send us the confirmation screenshot via WhatsApp.\nThank you for your cooperation💜',
-                    12,
-                    FontWeight.w300,
-                    Colors.white),
-              ],
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            backgroundColor: containerColor,
+            title:
+                reuseText("Enroll Now!", 20, FontWeight.w400, primaryTextColor),
+            content: SizedBox(
+              height: ResponsiveScreen.height(context) * 0.430,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  reuseText(
+                      'Unlock Your Future: Enroll Now and Transform Your Career!',
+                      14,
+                      FontWeight.normal,
+                      Colors.white),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  reuseText('Pay Now With', 16, FontWeight.w500, Colors.white),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset(
+                        "assets/icons/easypaisa.png",
+                        scale: 9,
+                      ),
+                      reuseText('Easypaisa: 0313-0339546', 14, FontWeight.w300,
+                          Colors.white),
+                    ],
+                  ),
+                  SizedBox(height: 20.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset(
+                        "assets/icons/jazz.png",
+                        scale: 9,
+                      ),
+                      reuseText('Jazz Cash: 0313-0339546', 14, FontWeight.w300,
+                          Colors.white),
+                    ],
+                  ),
+                  SizedBox(height: 20.h),
+                  reuseText('For Bank account WhatsApp us', 16, FontWeight.w400,
+                      Colors.white),
+                  SizedBox(height: 20.h),
+                  reuseText(
+                      'Dear Student, \nTo access the course, kindly complete your payment and send us the confirmation screenshot via WhatsApp.\nThank you for your cooperation💜',
+                      12,
+                      FontWeight.w300,
+                      Colors.white),
+                ],
+              ),
             ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                sendPurchaseRequest(
-                    context, courseId, courseTitle); // Pass context here
-              },
-              child: const Text('Pay Now'),
-            ),
-          ],
-        );
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (!isRequestSent) {
+                    setState(() {
+                      isRequestSent = true;
+                    });
+                    try {
+                      sendPurchaseRequest(context, courseId, courseTitle);
+                    } catch (error) {
+                      setState(() {
+                        isRequestSent = false;
+                      });
+                    }
+                  }
+                },
+                child: const Text('Pay Now'),
+              ),
+            ],
+          );
+        });
       },
     );
   }
@@ -209,7 +222,7 @@ class RequestHandler {
     );
   }
 
-  static void sendPurchaseRequest(
+  static sendPurchaseRequest(
       BuildContext context, String courseId, String courseTitle,
       [bool isRetry = false]) async {
     User? user = FirebaseAuth.instance.currentUser;
