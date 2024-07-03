@@ -38,105 +38,112 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const CustomDrawer(),
-      body: Container(
-        margin: EdgeInsets.symmetric(
-          vertical: ResponsiveScreen.height(context) * 0.06,
-          horizontal: ResponsiveScreen.width(context) * 0.04,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildProfilePicAndName(context),
-            SizedBox(
-              height: ResponsiveScreen.height(context) * 0.03,
-            ),
-            SizedBox(
-              height: ResponsiveScreen.height(context) * 0.06,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  buildCourseButton(ResponsiveScreen.width(context) - 100),
-                  buildCpnButton(ResponsiveScreen.width(context) - 150),
-                  buildNotificationButton(ResponsiveScreen.width(context) - 70),
-                  buildContactButton(ResponsiveScreen.width(context) - 120),
-                ],
+    return WillPopScope(
+      onWillPop: () async {
+        return false; // Disable back button
+      },
+      child: Scaffold(
+        drawer: const CustomDrawer(),
+        body: Container(
+          margin: EdgeInsets.symmetric(
+            vertical: ResponsiveScreen.height(context) * 0.06,
+            horizontal: ResponsiveScreen.width(context) * 0.04,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildProfilePicAndName(context),
+              SizedBox(
+                height: ResponsiveScreen.height(context) * 0.03,
               ),
-            ),
-            SizedBox(height: ResponsiveScreen.height(context) * 0.02),
-            index == 0
-                ? reuseText("Choose Your Course", 20, FontWeight.normal,
-                    primaryTextColor)
-                : index == 1
-                    ? reuseText("", 20, FontWeight.normal, primaryTextColor)
-                    : index == 2
-                        ? reuseText("Notifications", 20, FontWeight.normal,
-                            primaryTextColor)
-                        : reuseText("Contact Us", 20, FontWeight.normal,
-                            primaryTextColor),
+              SizedBox(
+                height: ResponsiveScreen.height(context) * 0.06,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    buildCourseButton(ResponsiveScreen.width(context) - 100),
+                    buildCpnButton(ResponsiveScreen.width(context) - 150),
+                    buildNotificationButton(
+                        ResponsiveScreen.width(context) - 70),
+                    buildContactButton(ResponsiveScreen.width(context) - 120),
+                  ],
+                ),
+              ),
+              SizedBox(height: ResponsiveScreen.height(context) * 0.02),
+              index == 0
+                  ? reuseText("Choose Your Course", 20, FontWeight.normal,
+                      primaryTextColor)
+                  : index == 1
+                      ? reuseText("", 20, FontWeight.normal, primaryTextColor)
+                      : index == 2
+                          ? reuseText("Notifications", 20, FontWeight.normal,
+                              primaryTextColor)
+                          : reuseText("Contact Us", 20, FontWeight.normal,
+                              primaryTextColor),
 
-            index == 0
-                ? Expanded(child: courseScreen())
-                : index == 1
-                    ? Expanded(
-                        child: cpnCalculator(
-                            test, inter, matriculation, context, () {
-                        double testMarks = double.tryParse(test.text) ?? 0;
-                        double interPercentage =
-                            double.tryParse(inter.text) ?? 0;
-                        double matricPercentage =
-                            double.tryParse(matriculation.text) ?? 0;
-                        double cpn = calculateCPN(
-                            testMarks, interPercentage, matricPercentage);
-                        // Display the result in a dialog
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                backgroundColor: shadowColor,
-                                title: const Text(
-                                  "CPN Result",
-                                  style: TextStyle(color: primaryTextColor),
-                                ),
-                                content: reuseText(
-                                    "Your CPN is ${cpn.toStringAsFixed(2)}",
-                                    14,
-                                    FontWeight.normal,
-                                    primaryTextColor),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: const Text(
-                                      "OK",
-                                      style: TextStyle(color: primaryTextColor),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      test.clear();
-                                      inter.clear();
-                                      matriculation.clear();
-                                    },
+              index == 0
+                  ? Expanded(child: courseScreen())
+                  : index == 1
+                      ? Expanded(
+                          child: cpnCalculator(
+                              test, inter, matriculation, context, () {
+                          double testMarks = double.tryParse(test.text) ?? 0;
+                          double interPercentage =
+                              double.tryParse(inter.text) ?? 0;
+                          double matricPercentage =
+                              double.tryParse(matriculation.text) ?? 0;
+                          double cpn = calculateCPN(
+                              testMarks, interPercentage, matricPercentage);
+                          // Display the result in a dialog
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: shadowColor,
+                                  title: const Text(
+                                    "CPN Result",
+                                    style: TextStyle(color: primaryTextColor),
                                   ),
-                                ],
-                              );
-                            });
-                      }))
-                    : index == 2
-                        ? Expanded(child: notificationScreen())
-                        : Expanded(child: contactScreen(context))
+                                  content: reuseText(
+                                      "Your CPN is ${cpn.toStringAsFixed(2)}",
+                                      14,
+                                      FontWeight.normal,
+                                      primaryTextColor),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text(
+                                        "OK",
+                                        style:
+                                            TextStyle(color: primaryTextColor),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        test.clear();
+                                        inter.clear();
+                                        matriculation.clear();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        }))
+                      : index == 2
+                          ? Expanded(child: notificationScreen())
+                          : Expanded(child: contactScreen(context))
 
-            // buildWelcomeTabBar(tabController),
-            // Expanded(
-            //   child: TabBarView(
-            //     controller: tabController,
-            //     children: [
-            //       courseScreen(),
-            //       notificationScreen(),
-            //       contactScreen(context),
-            //     ],
-            //   ),
-            // ),
-          ],
+              // buildWelcomeTabBar(tabController),
+              // Expanded(
+              //   child: TabBarView(
+              //     controller: tabController,
+              //     children: [
+              //       courseScreen(),
+              //       notificationScreen(),
+              //       contactScreen(context),
+              //     ],
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
     );

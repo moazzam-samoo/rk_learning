@@ -22,10 +22,10 @@ class _ResultScreenState extends State<ResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final studentName = FirebaseAuth.instance.currentUser!.displayName
-        .toString()
-        .split(" ")[0]
-        .capitalize();
+    String? displayName = FirebaseAuth.instance.currentUser?.displayName;
+    String studentName = displayName != null && displayName.isNotEmpty
+        ? displayName.split(" ")[0].capitalize()
+        : "Guest";
     final result = ((widget.count / widget.mcq.length) * 100).toInt();
     return Screenshot(
       controller: screenshotController,
@@ -40,11 +40,25 @@ class _ResultScreenState extends State<ResultScreen> {
                   backgroundColor:
                       result < 40 ? Colors.redAccent : Colors.greenAccent,
                   radius: 78,
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        FirebaseAuth.instance.currentUser!.photoURL.toString()),
-                    radius: 75,
-                  ),
+                  child: FirebaseAuth.instance.currentUser?.photoURL != null
+                      ? CircleAvatar(
+                          backgroundImage: NetworkImage(FirebaseAuth
+                              .instance.currentUser!.photoURL
+                              .toString()),
+                          radius: 75,
+                        )
+                      : CircleAvatar(
+                          backgroundColor: result < 40
+                              ? Colors.redAccent
+                              : Colors.greenAccent,
+                          radius: 78,
+                          child: const Image(
+                            image: AssetImage('assets/icons/user.png'),
+                            fit: BoxFit.cover,
+                            height: 150,
+                            width: 150,
+                          ),
+                        ),
                 ),
               ),
               SizedBox(height: 20.h),

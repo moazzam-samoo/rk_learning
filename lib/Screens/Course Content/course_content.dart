@@ -13,8 +13,12 @@ import '../../Database/firebase_handler.dart';
 class CourseContent extends StatefulWidget {
   final String courseID;
   final int selectedIndex;
+  final String courseTitle;
   const CourseContent(
-      {super.key, required this.selectedIndex, required this.courseID});
+      {super.key,
+      required this.selectedIndex,
+      required this.courseID,
+      required this.courseTitle});
 
   @override
   State<CourseContent> createState() => _CourseContentState();
@@ -95,9 +99,11 @@ class _CourseContentState extends State<CourseContent>
                             child: TabBarView(
                               controller: tabController,
                               children: [
-                                playListScreen(widget.courseID),
-                                quizScreen(widget.courseID),
-                                notesScreen(widget.courseID),
+                                playListScreen(
+                                    widget.courseID, widget.courseTitle),
+                                quizScreen(widget.courseID, widget.courseTitle),
+                                notesScreen(
+                                    widget.courseID, widget.courseTitle),
                               ],
                             ),
                           ),

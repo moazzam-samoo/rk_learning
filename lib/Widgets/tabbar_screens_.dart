@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -13,8 +14,10 @@ import '../Constants/colors.dart';
 import '../Constants/responsive_screen.dart';
 import '../Database/firebase_handler.dart';
 import '../Models/notification_model.dart';
+import '../Screens/Authentication Screen/google_auth.dart';
 import '../Screens/Course Content/course_content.dart';
 import '../Screens/MCQs/mcq.dart';
+import '../Screens/Welcome Screen/welcome_screen.dart';
 import 'build_widgets.dart';
 import 'navigate_links_to_other_platform.dart';
 
@@ -52,29 +55,17 @@ courseScreen() {
             itemCount: course.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () async {
-                  String purchasedStatus =
-                      await RequestHandler.checkCoursePurchaseStatus(
-                          course[index].id!);
-                  if (purchasedStatus == 'approved') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CourseContent(
-                          selectedIndex: index,
-                          courseID: course[index].id!,
-                        ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => CourseContent(
+                        courseTitle: course[index].title!,
+                        selectedIndex: index,
+                        courseID: course[index].id!,
                       ),
-                    );
-                  } else if (purchasedStatus == 'pending') {
-                    RequestHandler.showPendingRequestDialog(context);
-                  } else if (purchasedStatus == 'denied') {
-                    RequestHandler.showDeniedRequestDialog(
-                        context, course[index].id!, course[index].title!);
-                  } else {
-                    RequestHandler.showPurchaseDialog(
-                        context, course[index].id!, course[index].title!);
-                  }
+                    ),
+                  );
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 4.w),
@@ -373,7 +364,7 @@ contactScreen(BuildContext context) {
   );
 }
 
-playListScreen(String courseID) {
+playListScreen(String courseID, String courseTitle) {
   return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
           .collection('course')
@@ -412,12 +403,38 @@ playListScreen(String courseID) {
             itemCount: playlist.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => Player(
-                      link: playlist[index]['link'],
-                    ),
-                  ));
+                onTap: () async {
+                  User? user = FirebaseAuth.instance.currentUser;
+                  if (index < 5) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Player(
+                        link: playlist[index]['link'],
+                      ),
+                    ));
+                  } else if (user == null || user.isAnonymous) {
+                    showSignInDialog(context);
+                  } else {
+                    String purchasedStatus =
+                        await RequestHandler.checkCoursePurchaseStatus(
+                            courseID);
+                    if (purchasedStatus == 'approved') {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => Player(
+                            link: playlist[index]['link'],
+                          ),
+                        ),
+                      );
+                    } else if (purchasedStatus == 'pending') {
+                      RequestHandler.showPendingRequestDialog(context);
+                    } else if (purchasedStatus == 'denied') {
+                      RequestHandler.showDeniedRequestDialog(
+                          context, courseID, courseTitle);
+                    } else {
+                      RequestHandler.showPurchaseDialog(
+                          context, courseID, courseTitle);
+                    }
+                  }
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
@@ -483,7 +500,7 @@ playListScreen(String courseID) {
       });
 }
 
-quizScreen(String courseID) {
+quizScreen(String courseID, String courseTitle) {
   return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
           .collection('course')
@@ -523,12 +540,36 @@ quizScreen(String courseID) {
             itemBuilder: (context, index) {
               var questionsLength = (mcq[index]['questions'] as List).length;
               return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) =>
-                              MCQ(mcq: mcq[index]['questions']))));
+                onTap: () async {
+                  User? user = FirebaseAuth.instance.currentUser;
+                  if (index < 5) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) =>
+                                MCQ(mcq: mcq[index]['questions']))));
+                  } else if (user == null || user.isAnonymous) {
+                    showSignInDialog(context);
+                  } else {
+                    String purchasedStatus =
+                        await RequestHandler.checkCoursePurchaseStatus(
+                            courseID);
+                    if (purchasedStatus == 'approved') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) =>
+                                  MCQ(mcq: mcq[index]['questions']))));
+                    } else if (purchasedStatus == 'pending') {
+                      RequestHandler.showPendingRequestDialog(context);
+                    } else if (purchasedStatus == 'denied') {
+                      RequestHandler.showDeniedRequestDialog(
+                          context, courseID, courseTitle);
+                    } else {
+                      RequestHandler.showPurchaseDialog(
+                          context, courseID, courseTitle);
+                    }
+                  }
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
@@ -582,7 +623,7 @@ quizScreen(String courseID) {
       });
 }
 
-notesScreen(String courseID) {
+notesScreen(String courseID, String courseTitle) {
   return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
           .collection('course')
@@ -621,11 +662,34 @@ notesScreen(String courseID) {
             itemCount: note.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => PDFScreen(
-                          path: note[index]['link'],
-                          title: note[index]['title'])));
+                onTap: () async {
+                  User? user = FirebaseAuth.instance.currentUser;
+                  if (index < 5) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => PDFScreen(
+                            path: note[index]['link'],
+                            title: note[index]['title'])));
+                  } else if (user == null || user.isAnonymous) {
+                    showSignInDialog(context);
+                  } else {
+                    String purchasedStatus =
+                        await RequestHandler.checkCoursePurchaseStatus(
+                            courseID);
+                    if (purchasedStatus == 'approved') {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => PDFScreen(
+                              path: note[index]['link'],
+                              title: note[index]['title'])));
+                    } else if (purchasedStatus == 'pending') {
+                      RequestHandler.showPendingRequestDialog(context);
+                    } else if (purchasedStatus == 'denied') {
+                      RequestHandler.showDeniedRequestDialog(
+                          context, courseID, courseTitle);
+                    } else {
+                      RequestHandler.showPurchaseDialog(
+                          context, courseID, courseTitle);
+                    }
+                  }
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
@@ -663,4 +727,41 @@ notesScreen(String courseID) {
               );
             });
       });
+}
+
+void showSignInDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: shadowColor,
+        title: reuseText("Please Login", 18, FontWeight.w400, primaryTextColor),
+        content: reuseText("You need to log in to enroll in the courses.", 14,
+            FontWeight.normal, primaryTextColor),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: primaryTextColor),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              User? user = await Authentication.signInWithGoogle();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const WelcomeScreen(),
+                ),
+              );
+            },
+            child:
+                const Text('Login', style: TextStyle(color: primaryTextColor)),
+          ),
+        ],
+      );
+    },
+  );
 }

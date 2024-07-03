@@ -41,18 +41,20 @@ class _GoogleButtonState extends State<GoogleButton>
     return CupertinoButton(
       padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 5.w),
       onPressed: () async {
-        EasyLoading.show();
-        User? user = await Authentication.signInWithGoogle();
-        if (!mounted) {
-          EasyLoading.dismiss();
-        }
-        if (user != null) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const WelcomeScreen(),
-            ),
-          );
-        }
+        showSignInDialog(context, () async {
+          EasyLoading.show();
+          User? user = await Authentication.signInWithGoogle();
+          if (!mounted) {
+            EasyLoading.dismiss();
+          }
+          if (user != null) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const WelcomeScreen(),
+              ),
+            );
+          }
+        });
       },
       child: Container(
           alignment: Alignment.center,
@@ -84,5 +86,58 @@ class _GoogleButtonState extends State<GoogleButton>
         state == AppLifecycleState.detached) {
       EasyLoading.dismiss();
     }
+  }
+
+  static void showSignInDialog(BuildContext context, Function() onPressed) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: shadowColor,
+          title: reuseText("Sign In", 22, FontWeight.bold, primaryTextColor),
+          content: reuseText("Please choose a sign-in method", 14,
+              FontWeight.normal, primaryTextColor),
+          actions: <Widget>[
+            TextButton(
+              onPressed: onPressed,
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/icons/google.png', // Add your Google icon asset here
+                    height: 24,
+                    width: 24,
+                  ),
+                  const SizedBox(width: 10),
+                  const Text(
+                    'Sign in with Google',
+                    style: TextStyle(fontSize: 16, color: primaryTextColor),
+                  ),
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const WelcomeScreen(),
+                  ),
+                );
+              },
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.person,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(width: 10),
+                  reuseText("Sign in as Guest", 14, FontWeight.normal,
+                      primaryTextColor),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
