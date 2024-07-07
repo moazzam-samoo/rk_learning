@@ -673,7 +673,7 @@ notesScreen(String courseID, String courseTitle) {
                     showSignInDialog(context);
                   } else {
                     String purchasedStatus =
-                        await RequestHandler.checkCoursePurchaseStatus(
+                        await RequestHandler.checkCoursePurchaseStatus(                                                              
                             courseID);
                     if (purchasedStatus == 'approved') {
                       Navigator.of(context).push(MaterialPageRoute(
